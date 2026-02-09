@@ -1,0 +1,19 @@
+/** Home page style start **/
+.loginContainer{
+    margin: auto;
+    margin-top: 8rem;
+    width: 30%;
+    border: 2px #F0F0F0 solid;
+    border-radius: 3rem;
+    padding: 2rem;
+    text-align: center;
+}
+.title{
+    font-weight: bold;
+}
+
+.forgotLink{
+    text-decoration: none;
+    font-size: 0.75rem;
+    text-align: start;
+}
