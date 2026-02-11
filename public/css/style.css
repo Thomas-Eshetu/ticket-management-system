@@ -17,3 +17,13 @@
     font-size: 0.75rem;
     text-align: start;
 }
+
+/** Add user style start **/
+.addContainer{
+    width: 70%;
+    background-color: #F7F7F7;
+    border: 2px #F0F0F0 solid;
+    border-radius: 2rem;
+    margin: auto;
+    padding: 1rem;
+}

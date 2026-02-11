@@ -17,8 +17,8 @@
                   <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                       data-bs-parent="#sidenavAccordion">
                       <nav class="sb-sidenav-menu-nested nav">
-                          <a class="nav-link" href="{{ url('/add-user') }}">Add User</a>
-                          <a class="nav-link" href="{{ url('/view-user') }}">View Users</a>
+                          <a class="nav-link" href="{{ url('/add-user') }}">Add User &nbsp;<i class="fas fa-add"></i></a>
+                          <a class="nav-link" href="{{ url('/view-user') }}">View Users &nbsp;<i class="fas fa-eye"></i></a>
                       </nav>
                   </div>
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"

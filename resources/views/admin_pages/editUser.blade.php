@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin - Add User</title>
+    <title>Admin - Edit User</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
@@ -25,10 +25,10 @@
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">User Management</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Add User</li>
+                        <li class="breadcrumb-item active">Edit User</li>
                     </ol>
                     <div class="addContainer">
-                        <h4 class="text-center">Add Staff User</h4>
+                        <h4 class="text-center">Update Staff User</h4>
 
                         @if (session('success'))
                             <div class="alert alert-success">
@@ -109,7 +109,7 @@
 
                             <div class="text-end">
                                 <button type="submit" class="btn btn-success">
-                                    Save <i class="fas fa-save"></i>
+                                    Update <i class="fas fa-edit"></i>
                                 </button>
                             </div>
                         </form>

@@ -9,3 +9,6 @@ Route::get('/', function () {
 Route::get('/admin-dashboard', [AdminController::class, 'dashboard']);
 Route::get('/add-user', [AdminController::class,'addUserView']);
 Route::get('/view-user', [AdminController::class,'viewUserView']);
+Route::get('/edit-user', [AdminController::class,'editUserView']);
+
+Route::post('/staff/store', [AdminController::class, 'store'])->name('staff.store');
