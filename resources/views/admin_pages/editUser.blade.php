@@ -11,7 +11,10 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -23,35 +26,31 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">User Management</h1>
+                    <h3 class="mt-4">User Management</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Edit User</li>
                     </ol>
                     <div class="addContainer">
                         <h4 class="text-center">Update Staff User</h4>
 
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
                         <hr>
-                        <form action="{{ route('staff.store') }}" method="POST">
+                        <form action="{{ route('staff.update', $user->id) }}" method="POST">
                             @csrf
                             <div class="row">
 
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Staff Name</span>
-                                        <input type="text" class="form-control" name="staffName" required>
+                                        <input type="text" class="form-control" name="staffName"
+                                            value="{{ $user->name }}" required>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <select class="form-select" name="gender" required>
-                                            <option value="" selected disabled>Select Gender</option>
+                                            <option value="{{ $user->gender }}" selected>{{ $user->gender }}</option>
+                                            <option value="" disabled>Select Gender</option>
                                             <hr style="color: #F7F7F7";>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -62,35 +61,40 @@
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Email</span>
-                                        <input type="text" class="form-control" name="email" required>
+                                        <input type="email" class="form-control" name="email"
+                                            value="{{ $user->email }}" required>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Phone</span>
-                                        <input type="text" class="form-control" name="phone" required>
+                                        <input type="text" class="form-control" name="phone"
+                                            value="{{ $user->phone }}" required>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Department</span>
-                                        <input type="text" class="form-control" name="department" required>
+                                        <input type="text" class="form-control" name="department"
+                                            value="{{ $user->department }}" required>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Position</span>
-                                        <input type="text" class="form-control" name="position" required>
+                                        <input type="text" class="form-control" name="position"
+                                            value="{{ $user->position }}" required>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <select class="form-select" name="role" required>
-                                            <option value="" selected disabled>Select Role</option>
+                                            <option value="{{ $user->role }}" selected>{{ $user->role }}</option>
+                                            <option value="" disabled>Select Role</option>
                                             <hr style="color: #F7F7F7";>
                                             <option value="staff">Staff</option>
                                             <option value="admin">Admin</option>
@@ -101,7 +105,8 @@
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Username</span>
-                                        <input type="text" class="form-control" name="userName" required>
+                                        <input type="text" class="form-control" name="userName"
+                                            value="{{ $user->username }}" required>
                                     </div>
                                 </div>
 
@@ -131,6 +136,33 @@
             </footer>
         </div>
     </div>
+
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error!',
+                confirmButtonColor: '#4F0F06',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+            });
+        </script>
+    @endif
+
+
+    @if (session('success'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    confirmButtonColor: '#28a745',
+                    timer: 4000,
+                    showConfirmButton: false,
+                });
+            });
+        </script>
+    @endif
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="js/script.js"></script>

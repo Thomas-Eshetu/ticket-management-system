@@ -1,25 +1,44 @@
-/** Home page style start **/
-.loginContainer{
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
+
+/** Login page style start **/
+.loginContainer {
     margin: auto;
     margin-top: 8rem;
-    width: 30%;
+    width: 25%;
     border: 2px #F0F0F0 solid;
     border-radius: 3rem;
     padding: 2rem;
-    text-align: center;
-}
-.title{
-    font-weight: bold;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
-.forgotLink{
+.title {
+    font-weight: bold;
+    text-align: center;
+     font-family: "Unbounded", sans-serif;
+     font-size: 1.3rem;
+     margin-top: 0.5rem;
+}
+
+.forgotLink {
     text-decoration: none;
-    font-size: 0.75rem;
-    text-align: start;
+    font-size: 0.85rem;
+    text-align: end;
+    margin-top: 0.75rem;
+}
+
+.loginFooter {
+    background-color: #DBDBDB;
+    text-align: center;
+    padding: 1rem;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 17.75rem;
+    font-size: 0.85rem;
+    opacity: 0.8;
 }
 
 /** Add user style start **/
-.addContainer{
+.addContainer {
     width: 70%;
     background-color: #F7F7F7;
     border: 2px #F0F0F0 solid;

@@ -11,7 +11,10 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -23,7 +26,7 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">User Management</h1>
+                    <h3 class="mt-4">User Management</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Add User</li>
                     </ol>
@@ -31,11 +34,19 @@
                         <h4 class="text-center">Add Staff User</h4>
 
                         @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success!',
+                                        text: "{{ session('success') }}",
+                                        confirmButtonColor: '#28a745',
+                                        timer: 4000,
+                                        showConfirmButton: false,
+                                    });
+                                });
+                            </script>
                         @endif
-
                         <hr>
                         <form action="{{ route('staff.store') }}" method="POST">
                             @csrf
@@ -62,7 +73,7 @@
                                 <div class="col-md-6 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Email</span>
-                                        <input type="text" class="form-control" name="email" required>
+                                        <input type="email" class="form-control" name="email" required>
                                     </div>
                                 </div>
 
@@ -131,6 +142,19 @@
             </footer>
         </div>
     </div>
+
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error!',
+                confirmButtonColor: '#4F0F06',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+            });
+        </script>
+    @endif
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="js/script.js"></script>

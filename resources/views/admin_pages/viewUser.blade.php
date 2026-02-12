@@ -10,7 +10,10 @@
     <title>Admin - View Users</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -22,10 +25,19 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">User Management</h1>
+                    <h3 class="mt-4">User Management</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">View User</li>
                     </ol>
+
+                    {{-- @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif --}}
+
+
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -36,6 +48,8 @@
                                     <th>Phone</th>
                                     <th>Role</th>
                                     <th>Created At</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
 
@@ -46,10 +60,51 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
-                                        <td>{{ $user->role }}</td>
+                                        <td>
+                                            @if ($user->role === 'admin')
+                                                <span class="badge bg-primary">Administrator</span>
+                                            @elseif ($user->role === 'staff')
+                                                <span class="badge bg-secondary">Staff</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>
-                                            <a href="{{ url('/edit-user') }}" class="btn btn-sm btn-warning text-white" title="Edit User"><i class="fas fa-edit"></i></a>
+                                            @if ($user->status === 'active')
+                                                <span class="badge bg-success">{{ $user->status }}</span>
+                                            @elseif ($user->status === 'deactive')
+                                                <span class="badge bg-danger">{{ $user->status }}</span>
+                                            @elseif ($user->status === 'locked')
+                                                <span class="badge bg-warning">{{ $user->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="" class="badge bg-primary text-white" title="View User"><i
+                                                    class="fas fa-eye"></i></a>
+                                            <a href="{{ url('/edit-user', $user->id) }}" class="badge bg-warning text-white"
+                                                title="Edit User"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('reset.user', $user->id) }}"
+                                                class="badge bg-warning text-white reset-btn"
+                                                data-url="{{ route('reset.user', $user->id) }}" title="Reset Password">
+                                                <i class="fas fa-key"></i>
+                                            </a>
+
+                                            @if ($user->status === 'locked')
+                                                <a href="" class="badge bg-warning text-white unlock-btn"
+                                                    title="Unlock User"
+                                                    data-url="{{ route('active.user', $user->id) }}"><i
+                                                        class="fas fa-unlock"></i></a>
+                                            @elseif ($user->status === 'deactive')
+                                                <a href="{{ route('active.user', $user->id) }}"
+                                                    class="badge bg-success text-white active-btn" title="Activate User"
+                                                    data-url="{{ route('active.user', $user->id) }}"><i
+                                                        class="fa-solid fa-user-check"></i></a>
+                                            @elseif ($user->status === 'active')
+                                                <a href="{{ route('deactive.user', $user->id) }}"
+                                                    class="badge bg-danger text-white deactive-btn"
+                                                    title="Deactivate User"
+                                                    data-url="{{ route('deactive.user', $user->id) }}"><i
+                                                        class="fa-solid fa-ban"></i></a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -73,6 +128,117 @@
             </footer>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            document.querySelectorAll('.reset-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault(); // stop default link
+
+                    let url = this.getAttribute('data-url');
+
+                    Swal.fire({
+                        width: 400,
+                        title: "Are you sure?",
+                        text: "This will reset the user's password!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, reset it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url; // proceed
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.active-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let url = this.getAttribute('data-url');
+                    Swal.fire({
+                        width: 400,
+                        title: "Are you sure to activate user?",
+                        text: "This will activate the user!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#0E8C0E",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, Activate!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.unlock-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let url = this.getAttribute('data-url');
+                    Swal.fire({
+                        width: 400,
+                        title: "Are you sure to unlock user?",
+                        text: "This will unlock the user!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#0E8C0E",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, Unlock!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+
+
+            document.querySelectorAll('.deactive-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let url = this.getAttribute('data-url');
+                    Swal.fire({
+                        width: 400,
+                        title: "Are you sure to deactivate user?",
+                        text: "This will deactivate the user!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#D11C00",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, Deactivate!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                });
+            });
+
+        });
+    </script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    confirmButtonColor: '#28a745',
+                    timer: 4000,
+                    showConfirmButton: false,
+                });
+            });
+        </script>
+    @endif
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="js/script.js"></script>
