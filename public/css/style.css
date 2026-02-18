@@ -63,20 +63,67 @@
     border-bottom-right-radius: 1.5rem;
 }
 
-.main{
+.main {
     margin: 2rem;
 }
 
-.cards{
+.cards {
     margin: auto;
-    margin-left: 3rem;
+    margin-left: 8rem;
 }
-.card-group{
+
+.card-group {
     gap: 8rem;
     text-align: center;
 }
 
-.card-group .card{
+.card-group .card {
     width: 22rem;
     box-shadow: 8px 4px 6px #D9D9D9;
+}
+
+.sidebarLinkContainer {
+    margin-top: 6rem;
+}
+
+.sidebarLink {
+    margin-top: 1.5rem;
+    background: #5799FF;
+    padding: 0.5rem;
+    padding-left: 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.sidebarLink a {
+    text-decoration: none;
+    color: #F0F0F0;
+    font-size: 1.3rem;
+}
+
+.sidebarLink:hover, .logoutLink:hover {
+    background: #619DFF;
+}
+
+.logoutLink {
+    background: #5799FF;
+    padding: 0.5rem;
+    padding-left: 2rem;
+    border-radius: 1rem;
+    margin-top: 25rem;
+    cursor: pointer;
+}
+
+.logoutLink a {
+    text-decoration: none;
+    color: #F0F0F0;
+    font-size: 1.3rem;
+}
+
+.createContainer{
+    width: 70vw;
+    margin-left: 3rem;
+    padding: 2rem;
+    background-color: #F0F7FF;
+    border-radius: 1rem;
 }

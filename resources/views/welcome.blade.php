@@ -35,7 +35,7 @@
             <input type="password" class="form-control mt-3" name="password" placeholder="Enter your password">
 
             <div class="form-check mt-3">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="remember">
                 <label class="form-check-label" for="flexCheckDefault">Remember Me</label>
             </div>
 
