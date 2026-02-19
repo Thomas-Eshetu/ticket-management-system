@@ -127,3 +127,9 @@
     background-color: #F0F7FF;
     border-radius: 1rem;
 }
+
+.viewContainer{
+    width: 70vw;
+    margin-left: 3rem;
+    padding: 2rem;
+}

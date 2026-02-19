@@ -24,7 +24,54 @@
 
             <div class="viewContainer">
                 <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>#</th>
+                            <th>Ticket No.</th>
+                            <th>Issue Type</th>
+                            <th>Issue Started At</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Assigned Technician</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            @foreach ($tickets as $ticket)
+                                <tr>
+                                    <td>{{ $loop->iteration }} </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ $ticket->ticket_number }}</span>
+                                    </td>
+                                    <td>{{ $ticket->issue_type }}</td>
+                                    <td>{{ $ticket->issue_start_date }}</td>
+                                    <td>
+                                        @if ($ticket->status === 'open')
+                                            <span class="badge bg-primary">{{ $ticket->status }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($ticket->priority == null)
+                                            <span>TBA</span>
+                                        @else
+                                            {{ $ticket->priority }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($ticket->assigned_technician == null)
+                                            <span>TBA</span>
+                                        @else
+                                            {{ $ticket->assigned_technician }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="" class="badge bg-primary text-white" title="View Ticket"><i
+                                                class="fas fa-eye"></i></a>
+                                    </td>
+                                </tr>
+                            @endforeach
 
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

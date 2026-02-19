@@ -26,6 +26,7 @@ Route::post('/update-user/{id}', [AdminController::class, 'update'])->name('staf
 Route::get('/staff-dashboard', [StaffController::class, 'staffDashboard']) ->middleware('role:staff')->name('staffDashboard');
 Route::get('/staff-createTicket', [StaffController::class, 'createTicketView'])->middleware('role:staff')->name('createTicket');
 Route::get('/staff-viewTicket', [StaffController::class, 'viewTicketView'])->middleware('role:staff')->name(name: 'viewTicket');
+Route::post('/staff/create-ticket',[StaffController::class, 'createTicket'])->name('ticket.create')->middleware();
 
 /*** Auth Routes*/
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
