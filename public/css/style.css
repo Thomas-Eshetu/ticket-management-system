@@ -133,3 +133,25 @@
     margin-left: 3rem;
     padding: 2rem;
 }
+
+.viewTicketContainer{
+    margin-left: 3rem;
+    margin-right: 2rem;
+    border: 1px solid #C9C9C9;
+    padding: 0.75rem;
+    border-radius: 1rem;
+}
+
+.editTicketContainer{
+    background-color: #F2F2F2;
+    margin-left: 4rem;
+    margin-right: 3rem;
+    border: 1px solid #C9C9C9;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+form .form-control:focus{
+    box-shadow: none;
+    border: 1px solid #1A1E26;
+}

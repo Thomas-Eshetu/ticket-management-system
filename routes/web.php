@@ -22,6 +22,12 @@ Route::get('/deactive-user/{id}', [AdminController::class, 'deactivateUser'])->n
 Route::get('/active-user/{id}', [AdminController::class, 'activateUser'])->name('active.user')->middleware('role:admin');
 Route::post('/update-user/{id}', [AdminController::class, 'update'])->name('staff.update')->middleware('role:admin');
 
+Route::get('/admin-viewTicket', [AdminController::class, 'viewTickets'])->name('admin.viewTicket')->middleware('role:admin');
+Route::get('/admin-editTicket/{id}', [AdminController::class, 'editTicketView'])->name('admin.editTicket')->middleware('role:admin');
+Route::post('/admin-updateTicket/{id}', [AdminController::class, 'updateTicket'])->name('ticket.update')->middleware('role:admin');
+
+
+
 /***Staff Routes */
 Route::get('/staff-dashboard', [StaffController::class, 'staffDashboard']) ->middleware('role:staff')->name('staffDashboard');
 Route::get('/staff-createTicket', [StaffController::class, 'createTicketView'])->middleware('role:staff')->name('createTicket');

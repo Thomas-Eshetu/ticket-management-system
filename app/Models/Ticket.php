@@ -20,6 +20,7 @@ class Ticket extends Model
         'status',
         'priority',
         'assigned_technician',
+        'issue_due_date',
         'issue_resolved_at',
         'remark',
     ];

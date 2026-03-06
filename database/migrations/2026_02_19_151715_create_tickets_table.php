@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('priority')->nullable();
             $table->string('assigned_technician')->nullable();
+            $table->string('issue_due_date')->nullable();
             $table->dateTime('issue_resolved_at')->nullable();
             $table->string('remark')->nullable();
             $table->timestamps();

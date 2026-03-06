@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -29,6 +30,7 @@ class AdminController extends Controller
     return view("admin_pages.viewUser", compact("users"));
   }
 
+  //responsible to add staff users
   public function store(Request $request)
   {
     // Validate data
@@ -144,5 +146,60 @@ class AdminController extends Controller
       'status' => 'active'
     ]);
     return back()->with('success', 'User has been activated successfully!');
+  }
+
+  public function viewTickets()
+  {
+    $activeTickets = Ticket::join('users', 'tickets.user_id', '=', 'users.id')
+      ->where('tickets.status', 'open')
+      ->select('tickets.*', 'users.name as requester_name')
+      ->get();
+
+    $pendingTickets = Ticket::join('users', 'tickets.user_id', '=', 'users.id')
+      ->where('tickets.status', 'pending')
+      ->select('tickets.*', 'users.name as requester_name')
+      ->get();
+
+    $resolvedTickets = Ticket::join('users', 'tickets.user_id', '=', 'users.id')
+      ->where('tickets.status', 'resolved')
+      ->select('tickets.*', 'users.name as requester_name')
+      ->get();
+
+    $delayedTickets = Ticket::join('users', 'tickets.user_id', '=', 'users.id')
+      ->where('tickets.status', 'pending')->where('issue_due_date', '<', now())
+      ->select('tickets.*', 'users.name as requester_name')
+      ->get();
+
+
+    return view("admin_pages.viewTickets", compact(
+      "activeTickets",
+      "pendingTickets",
+      "resolvedTickets",
+      "delayedTickets"
+    ));
+  }
+
+  public function editTicketView($id)
+  {
+    $ticket = Ticket::find($id);
+    return view("admin_pages.editTicket", compact("ticket"));
+  }
+
+  public function updateTicket(Request $request, $id)
+  {
+    $ticket = Ticket::find($id);
+    if (!$ticket) {
+      return redirect()->back()->with('error', 'Ticket not found!');
+    }
+
+    $ticket->update([
+      'status' => $request->status,
+      'priority' => $request->priority,
+      'issue_due_date' => $request->dueDate,
+      'assigned_technician' => $request->assignedTech,
+      'remark' => $request->remark,
+    ]);
+
+    return redirect()->to('admin-viewTicket')->with('success', 'Ticket updated successfully!');
   }
 }

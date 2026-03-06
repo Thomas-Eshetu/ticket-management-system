@@ -17,8 +17,10 @@
                   <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                       data-bs-parent="#sidenavAccordion">
                       <nav class="sb-sidenav-menu-nested nav">
-                          <a class="nav-link" href="{{ url('/add-user') }}">Add User &nbsp;<i class="fas fa-add"></i></a>
-                          <a class="nav-link" href="{{ url('/view-user') }}">View Users &nbsp;<i class="fas fa-eye"></i></a>
+                          <a class="nav-link" href="{{ url('/add-user') }}">Add User &nbsp;&nbsp;&nbsp;&nbsp;<i
+                                  class="fas fa-add"></i></a>
+                          <a class="nav-link" href="{{ url('/view-user') }}">View Users &nbsp;<i
+                                  class="fas fa-eye"></i></a>
                       </nav>
                   </div>
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
@@ -36,27 +38,26 @@
                               View Tickets
                               <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                           </a>
-                          <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                              data-bs-parent="#sidenavAccordionPages">
+                          <div class="collapse" id="pagesCollapseAuth" data-bs-parent="#sidenavAccordionPages">
+
                               <nav class="sb-sidenav-menu-nested nav">
-                                  <a class="nav-link" href="login.html">Active</a>
-                                  <a class="nav-link" href="register.html">In Progress</a>
-                                  <a class="nav-link" href="password.html">Delayed</a>
-                                  <a class="nav-link" href="password.html">Resolved</a>
-                              </nav>
-                          </div>
-                          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                              data-bs-target="#pagesCollapseError" aria-expanded="false"
-                              aria-controls="pagesCollapseError">
-                              Error
-                              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                          </a>
-                          <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                              data-bs-parent="#sidenavAccordionPages">
-                              <nav class="sb-sidenav-menu-nested nav">
-                                  <a class="nav-link" href="401.html">401 Page</a>
-                                  <a class="nav-link" href="404.html">404 Page</a>
-                                  <a class="nav-link" href="500.html">500 Page</a>
+
+                                  <a class="nav-link" href="{{ route('admin.viewTicket', ['status' => 'active']) }}">
+                                      Active &nbsp;&nbsp;<i class="fa-solid fa-circle-dot"></i>
+                                  </a>
+
+                                  <a class="nav-link" href="{{ route('admin.viewTicket', ['status' => 'pending']) }}">
+                                      Pending &nbsp;&nbsp;<i class="fa-regular fa-hourglass-half"></i>
+                                  </a>
+
+                                  <a class="nav-link" href="{{ route('admin.viewTicket', ['status' => 'delayed']) }}">
+                                      Delayed &nbsp;&nbsp;<i class="fa-solid fa-clock"></i>
+                                  </a>
+
+                                  <a class="nav-link" href="{{ route('admin.viewTicket', ['status' => 'resolved']) }}">
+                                      Resolved &nbsp;<i class="fa-solid fa-circle-check"></i>
+                                  </a>
+
                               </nav>
                           </div>
                       </nav>

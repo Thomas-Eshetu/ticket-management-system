@@ -80,8 +80,9 @@
                                         <td>
                                             <a href="" class="badge bg-primary text-white" title="View User"><i
                                                     class="fas fa-eye"></i></a>
-                                            <a href="{{ url('/edit-user', $user->id) }}" class="badge bg-warning text-white"
-                                                title="Edit User"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ url('/edit-user', $user->id) }}"
+                                                class="badge bg-warning text-white" title="Edit User"><i
+                                                    class="fas fa-edit"></i></a>
                                             <a href="{{ route('reset.user', $user->id) }}"
                                                 class="badge bg-warning text-white reset-btn"
                                                 data-url="{{ route('reset.user', $user->id) }}" title="Reset Password">
@@ -114,18 +115,8 @@
 
                 </div>
             </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2026</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            @include('components.adminFooter')
+
         </div>
     </div>
 

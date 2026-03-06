@@ -10,7 +10,11 @@ class StaffController extends Controller
 {
     public function staffDashboard()
     {
-        return view("staff_pages.dashboard");
+        $openTickets = Ticket::where('status', 'open')->count();
+        $pendingTickets = Ticket::where('status', 'pending')->count();
+        $resolvedTickets = Ticket::where('status', 'resolved')->count();
+
+        return view("staff_pages.dashboard", compact(["openTickets", "pendingTickets", "resolvedTickets"]));
     }
 
     public function createTicketView()

@@ -24,7 +24,7 @@
 
                     <div class="card rounded-4">
                         <div class="card-header">
-                            <span class="badge bg-primary">3</span>
+                            <span class="badge bg-primary">{{ $openTickets }}</span>
                         </div>
                         <div class="card-body text-bg-primary">
                             <p>Raised Tickets</p>
@@ -33,7 +33,7 @@
 
                     <div class="card rounded-4">
                         <div class="card-header">
-                            <span class="badge bg-warning">3</span>
+                            <span class="badge bg-warning">{{ $pendingTickets }}</span>
                         </div>
                         <div class="card-body text-bg-warning">
                             <p>Pending Tickets</p>
@@ -42,7 +42,7 @@
 
                     <div class="card rounded-4">
                         <div class="card-header">
-                            <span class="badge bg-success">3</span>
+                            <span class="badge bg-success">{{ $resolvedTickets }}</span>
                         </div>
                         <div class="card-body text-bg-success">
                             <p>Resolved Tickets</p>
