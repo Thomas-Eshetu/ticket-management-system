@@ -25,42 +25,52 @@
                 <div class="container-fluid px-4">
                     <h3 class="mt-4">Dashboard</h3>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item active">Dashboard <i class="fa-solid fa-gauge"></i></li>
                     </ol>
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-primary text-white mb-4">
-                                <div class="card-body"><i class="fas fa-ticket"></i> &nbsp; Active Tickets</div>
+                                <div class="card-body fw-bold"><i class="fa-solid fa-circle-dot"></i> &nbsp; Active
+                                    Tickets <span class="badge position-absolute top-0 start-100 translate-middle"
+                                        style="background: #BA0000;">{{ $activeTickets }}</span></div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    <div class="small text-white"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-warning text-white mb-4">
-                                <div class="card-body"><i class="fas fa-ticket"></i> &nbsp; In Progress Tickets</div>
+                                <div class="card-body fw-bold"><i class="fa-regular fa-hourglass-half"></i> &nbsp;
+                                    Pending Tickets <span
+                                        class="badge position-absolute top-0 start-100 translate-middle"
+                                        style="background: #BA0000;">{{ $pendingTickets }}</span></div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+
+                                    <div class="small text-white"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body"><i class="fas fa-ticket"></i> &nbsp; Resolved Tickets</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-danger text-white mb-4">
-                                <div class="card-body"><i class="fas fa-ticket"></i> &nbsp; Delayed Tickets</div>
+                                <div class="card-body fw-bold"><i class="fa-solid fa-clock"></i> &nbsp; Delayed Tickets
+                                    <span class="badge position-absolute top-0 start-100 translate-middle"
+                                        style="background: #BA0000;">{{ $delayedTickets }}</span>
+                                </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    <div class="small text-white"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body fw-bold"><i class="fa-solid fa-clock"></i> &nbsp; Resolved Tickets
+                                    <span class="badge position-absolute top-0 start-100 translate-middle"
+                                        style="background: #BA0000;">{{ $resolvedTickets }}</span>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <div class="small text-white"></div>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +80,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart
+                                    Weekly Analytics
                                 </div>
                                 <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
                                 </div>
@@ -80,7 +90,7 @@
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart
+                                    Monthly Analytics
                                 </div>
                                 <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas>
                                 </div>
@@ -90,35 +100,42 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            DataTable
+                            Recent Tickets
                         </div>
                         <div class="card-body">
-                            <table id="datatablesSimple">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
                                         <th>Department</th>
-                                        <th>Position</th>
-                                        <th>Created At</th>
+                                        <th>Issue Type</th>
+                                        <th>Issue Started At</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Department</th>
-                                        <th>Position</th>
-                                        <th>Created At</th>
-                                    </tr>
-                                </tfoot>
                                 <tbody>
-
+                                    @foreach ($recentTickets as $recentTicket)
+                                        <tr>
+                                            <td>{{ $recentTicket->department }}</td>
+                                            <td>{{ $recentTicket->issue_type }}</td>
+                                            <td>{{ $recentTicket->issue_start_date }}</td>
+                                            <td>
+                                                @if ($recentTicket->status === 'open')
+                                                    <span class="badge bg-primary">{{ $recentTicket->status }}</span>
+                                                    @elseif ($recentTicket->status === 'pending')
+                                                    <span class="badge bg-warning">{{ $recentTicket->status }}</span>
+                                                    @elseif ($recentTicket->status === 'resolved')
+                                                    <span class="badge bg-success">{{ $recentTicket->status }}</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </main>
-                       @include('components.adminFooter')
+            @include('components.adminFooter')
 
         </div>
     </div>
@@ -130,7 +147,6 @@
     <script src="charts/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
-    <script src="js/datatables-simple-demo.js"></script>
 </body>
 
 </html>

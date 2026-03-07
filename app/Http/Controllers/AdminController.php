@@ -15,7 +15,27 @@ class AdminController extends Controller
   public function dashboard()
   {
 
-    return view("admin_pages.dashboard");
+    $activeTickets = Ticket::where('status', 'open')
+      ->count();
+    $pendingTickets = Ticket::where('status', 'pending')
+      ->count();
+    $resolvedTickets = Ticket::where('status', 'resolved')
+      ->count();
+    $delayedTickets = Ticket::where('status', 'pending')
+      ->where('issue_due_date', '<', now())
+      ->count();
+
+    $recentTickets = Ticket::latest()
+      ->take(4)
+      ->get();
+
+    return view("admin_pages.dashboard", compact(
+      "activeTickets",
+      "pendingTickets",
+      "resolvedTickets",
+      "delayedTickets",
+      "recentTickets"
+    ));
   }
 
   public function addUserView()
@@ -198,6 +218,7 @@ class AdminController extends Controller
       'issue_due_date' => $request->dueDate,
       'assigned_technician' => $request->assignedTech,
       'remark' => $request->remark,
+      'issue_resolved_at' => $request->resolveDate,
     ]);
 
     return redirect()->to('admin-viewTicket')->with('success', 'Ticket updated successfully!');

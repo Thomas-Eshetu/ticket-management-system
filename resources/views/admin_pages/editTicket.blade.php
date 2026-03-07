@@ -140,7 +140,7 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="" class="form-label mb-1">Remark <span
                                                 class="text-danger">*</span></label>
-                                        <textarea name="" id="" class="form-control" name="remark"></textarea>
+                                        <textarea name="" id="" class="form-control" name="remark" required></textarea>
                                     </div>
                                 @endif
 
@@ -178,7 +178,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
-    <script src="js/script.js"></script>
+    <script src="/js/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="charts/chart-area-demo.js"></script>
     <script src="charts/chart-bar-demo.js"></script>
