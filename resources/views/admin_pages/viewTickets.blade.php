@@ -14,7 +14,12 @@
     <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
     <style>
         /* ACTIVE (Primary) */
@@ -107,7 +112,7 @@
                                 <h5 class="btn btn-sm btn-primary"><i class="fa-solid fa-circle-dot"></i> Active Tickets
                                 </h5>
 
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="activeTicketsTable">
                                     <thead>
                                         <th>Ticket No.</th>
                                         <th>Requester</th>
@@ -171,7 +176,7 @@
                             <div class="tab-pane fade {{ $status == 'pending' ? 'show active' : '' }}" id="pending">
                                 <h5 class="btn btn-sm btn-warning text-light"><i
                                         class="fa-regular fa-hourglass-half"></i> Pending Tickets</h5>
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="pendingTicketsTable">
                                     <thead>
                                         <th>Ticket No.</th>
                                         <th>Affected Department</th>
@@ -226,9 +231,9 @@
                                                     </td>
                                                 </tr>
                                             @else
-                                                <tr>
+                                                {{-- <tr>
                                                     <td>No pending tickets available</td>
-                                                </tr>
+                                                </tr> --}}
                                             @endif
                                         @endforeach
                                     </tbody>
@@ -239,7 +244,7 @@
                                 id="delayed">
                                 <h5 class="btn btn-sm btn-danger"><i class="fa-solid fa-clock"></i> Delayed Tickets
                                 </h5>
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="delayedTicketsTable">
                                     <thead>
                                         <th>Ticket No.</th>
                                         <th>Affected Department</th>
@@ -296,9 +301,9 @@
                                                 </tr>
                                             @endforeach
                                         @else
-                                            <tr>
+                                            {{-- <tr>
                                                 <td colspan="8">No delayed tickets available</td>
-                                            </tr>
+                                            </tr> --}}
                                         @endif
 
                                     </tbody>
@@ -309,7 +314,7 @@
                                 id="resolved">
                                 <h5 class="btn btn-sm btn-success"><i class="fa-solid fa-circle-check"></i> Resolved
                                     Tickets</h5>
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="resolvedTicketsTable">
                                     <thead>
                                         <th>Ticket No.</th>
                                         <th>Affected Department</th>
@@ -361,9 +366,7 @@
                                                 </tr>
                                             @endforeach
                                         @else
-                                            <tr>
-                                                <td colspan="8">No resolved tickets available</td>
-                                            </tr>
+                                            
                                         @endif
 
                                     </tbody>
@@ -383,6 +386,22 @@
 
     <!--Import Modal-->
     @include('modals.viewTicketModal')
+
+
+    <script>
+        $(document).ready(function() {
+            $('#activeTicketsTable, #pendingTicketsTable, #delayedTicketsTable, #resolvedTicketsTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+                ordering: true,
+                searching: true,
+                dom: '<"row mb-3"<"col-md-6"l><"col-md-6 text-end"f>>rt<"row mt-3"<"col-md-6"i><"col-md-6 text-end"p>>'
+            });
+        });
+    </script>
 
 
     <!----Script to populate the modal--->

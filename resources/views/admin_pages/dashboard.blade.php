@@ -75,6 +75,19 @@
                             </div>
                         </div>
                     </div>
+
+                    <script>
+                        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                        const createdTickets = @json($trendData['created']);
+                        const resolvedTickets = @json($trendData['resolved']);
+                    </script>
+
+                    <script>
+                        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+                        const monthlyTickets = @json($monthlyData);
+                    </script>
+
                     <div class="row">
                         <div class="col-xl-6">
                             <div class="card mb-4">
@@ -121,9 +134,9 @@
                                             <td>
                                                 @if ($recentTicket->status === 'open')
                                                     <span class="badge bg-primary">{{ $recentTicket->status }}</span>
-                                                    @elseif ($recentTicket->status === 'pending')
+                                                @elseif ($recentTicket->status === 'pending')
                                                     <span class="badge bg-warning">{{ $recentTicket->status }}</span>
-                                                    @elseif ($recentTicket->status === 'resolved')
+                                                @elseif ($recentTicket->status === 'resolved')
                                                     <span class="badge bg-success">{{ $recentTicket->status }}</span>
                                                 @endif
                                             </td>

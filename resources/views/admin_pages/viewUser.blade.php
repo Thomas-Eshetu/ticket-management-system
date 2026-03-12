@@ -10,9 +10,17 @@
     <title>Admin - View Users</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+     <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 </head>
 
@@ -29,7 +37,7 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">View User</li>
                     </ol>
-
+<hr>
                     {{-- @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
@@ -38,8 +46,8 @@
 
 
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                    <div class="table-responsive viewContainer">
+                        <table class="table table-bordered table-striped" id="usersTable">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -78,7 +86,16 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="" class="badge bg-primary text-white" title="View User"><i
+                                            <a href="" class="badge bg-primary text-white" title="View User"
+                                                data-bs-toggle="modal" data-bs-target="#viewUserModal"
+                                                data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                                data-gender="{{ $user->gender }}" data-email="{{ $user->email }}"
+                                                data-phone="{{ $user->phone }}"
+                                                data-department="{{ $user->department }}"
+                                                data-position="{{ $user->position }}" data-role="{{ $user->role }}"
+                                                data-status="{{ $user->status }}"
+                                                data-created_at="{{ $user->created_at }}"
+                                                data-updated_at="{{ $user->updated_at }}"><i
                                                     class="fas fa-eye"></i></a>
                                             <a href="{{ url('/edit-user', $user->id) }}"
                                                 class="badge bg-warning text-white" title="Edit User"><i
@@ -119,6 +136,23 @@
 
         </div>
     </div>
+
+    @include('modals.viewUserModal')
+
+    <script>
+        $(document).ready(function() {
+            $('#usersTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+                ordering: true,
+                searching: true,
+                dom: '<"row mb-3"<"col-md-6"l><"col-md-6 text-end"f>>rt<"row mt-3"<"col-md-6"i><"col-md-6 text-end"p>>'
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -213,6 +247,7 @@
         });
     </script>
 
+
     @if (session('success'))
         <script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -229,6 +264,24 @@
             });
         </script>
     @endif
+
+    <!---Script to populate the modal--->
+    <script>
+        document.getElementById('viewUserModal').addEventListener('show.bs.modal', function(event) {
+            const btn = event.relatedTarget;
+
+            document.getElementById('modal-name').textContent = btn.getAttribute('data-name');
+            document.getElementById('modal-gender').textContent = btn.getAttribute('data-gender');
+            document.getElementById('modal-email').textContent = btn.getAttribute('data-email');
+            document.getElementById('modal-phone').textContent = btn.getAttribute('data-phone');
+            document.getElementById('modal-department').textContent = btn.getAttribute('data-department');
+            document.getElementById('modal-position').textContent = btn.getAttribute('data-position');
+            document.getElementById('modal-role').textContent = btn.getAttribute('data-role');
+            document.getElementById('modal-status').textContent = btn.getAttribute('data-status');
+            document.getElementById('modal-createdAt').textContent = btn.getAttribute('data-created_at');
+            document.getElementById('modal-updatedAt').textContent = btn.getAttribute('data-updated_at');
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>

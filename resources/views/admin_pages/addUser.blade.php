@@ -30,6 +30,7 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Add User</li>
                     </ol>
+                    <hr>
                     <div class="addContainer">
                         <h4 class="text-center">Add Staff User</h4>
 
@@ -53,67 +54,51 @@
                             <div class="row">
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Staff Name</span>
-                                        <input type="text" class="form-control" name="staffName" required>
-                                    </div>
+                                    <label for="" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" name="staffName" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <select class="form-select" name="gender" required>
-                                            <option value="" selected disabled>Select Gender</option>
-                                            <hr style="color: #F7F7F7";>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                    </div>
+                                    <label for="" class="form-label">Gender</label>
+                                    <select class="form-select" name="gender" required>
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Email</span>
-                                        <input type="email" class="form-control" name="email" required>
-                                    </div>
+                                    <label for="" class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Phone</span>
-                                        <input type="text" class="form-control" name="phone" required>
-                                    </div>
+                                    <label for="" class="form-label">Phone</label>
+                                    <input type="text" class="form-control" name="phone" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Department</span>
-                                        <input type="text" class="form-control" name="department" required>
-                                    </div>
+                                    <label for="" class="form-label">Department</label>
+                                    <input type="text" class="form-control" name="department" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Position</span>
-                                        <input type="text" class="form-control" name="position" required>
-                                    </div>
+                                    <label for="" class="form-label">Position</label>
+                                    <input type="text" class="form-control" name="position" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <select class="form-select" name="role" required>
-                                            <option value="" selected disabled>Select Role</option>
-                                            <hr style="color: #F7F7F7";>
-                                            <option value="staff">Staff</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    </div>
+                                    <label for="" class="form-label">Role</label>
+                                    <select class="form-select" name="role" required>
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="staff">Staff</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Username</span>
-                                        <input type="text" class="form-control" name="userName" required>
-                                    </div>
+                                    <label for="" class="form-label">Username</label>
+                                    <input type="text" class="form-control" name="userName" required>
                                 </div>
 
                             </div>
@@ -128,7 +113,7 @@
 
                 </div>
             </main>
-                       @include('components.adminFooter')
+            @include('components.adminFooter')
 
         </div>
     </div>

@@ -30,6 +30,7 @@
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Edit User</li>
                     </ol>
+                    <hr>
                     <div class="addContainer">
                         <h4 class="text-center">Update Staff User</h4>
 
@@ -39,75 +40,57 @@
                             <div class="row">
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Staff Name</span>
-                                        <input type="text" class="form-control" name="staffName"
-                                            value="{{ $user->name }}" required>
-                                    </div>
+                                    <label for="" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" name="staffName"
+                                        value="{{ $user->name }}" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <select class="form-select" name="gender" required>
-                                            <option value="{{ $user->gender }}" selected>{{ $user->gender }}</option>
-                                            <option value="" disabled>Select Gender</option>
-                                            <hr style="color: #F7F7F7";>
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                    </div>
+                                    <label for="" class="form-label">Gender</label>
+                                    <select class="form-select" name="gender" required>
+                                        <option value="" disabled>Select Gender</option>
+                                        <option value="male" {{ $user->gender == 'male' ? 'selected' : ''}}>Male</option>
+                                        <option value="female" {{ $user->gedner == 'female' ? 'selected' : '' }}>Female</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Email</span>
-                                        <input type="email" class="form-control" name="email"
-                                            value="{{ $user->email }}" required>
-                                    </div>
+                                    <label for="" class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email"
+                                        value="{{ $user->email }}" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Phone</span>
-                                        <input type="text" class="form-control" name="phone"
-                                            value="{{ $user->phone }}" required>
-                                    </div>
+                                    <label for="" class="form-label">Phone</label>
+                                    <input type="text" class="form-control" name="phone"
+                                        value="{{ $user->phone }}" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Department</span>
-                                        <input type="text" class="form-control" name="department"
-                                            value="{{ $user->department }}" required>
-                                    </div>
+                                    <label for="" class="form-label">Department</label>
+                                    <input type="text" class="form-control" name="department"
+                                        value="{{ $user->department }}" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Position</span>
-                                        <input type="text" class="form-control" name="position"
-                                            value="{{ $user->position }}" required>
-                                    </div>
+                                    <label for="" class="form-label">Position</label>
+                                    <input type="text" class="form-control" name="position"
+                                        value="{{ $user->position }}" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <select class="form-select" name="role" required>
-                                            <option value="{{ $user->role }}" selected>{{ $user->role }}</option>
-                                            <option value="" disabled>Select Role</option>
-                                            <hr style="color: #F7F7F7";>
-                                            <option value="staff">Staff</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    </div>
+                                    <label for="" class="form-label">Role</label>
+                                    <select class="form-select" name="role" required>
+                                        <option value="" disabled>Select Role</option>
+                                        <option value="staff" {{ $user->role == 'staff' ? 'selected' : '' }}>Staff</option>
+                                        <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text">Username</span>
-                                        <input type="text" class="form-control" name="userName"
-                                            value="{{ $user->username }}" required>
-                                    </div>
+                                    <label for="" class="form-label">Username</label>
+                                    <input type="text" class="form-control" name="userName"
+                                        value="{{ $user->username }}" required>
                                 </div>
 
                             </div>
@@ -122,7 +105,7 @@
 
                 </div>
             </main>
-                        @include('components.adminFooter')
+            @include('components.adminFooter')
 
         </div>
     </div>

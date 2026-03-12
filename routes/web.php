@@ -32,7 +32,12 @@ Route::post('/admin-updateTicket/{id}', [AdminController::class, 'updateTicket']
 Route::get('/staff-dashboard', [StaffController::class, 'staffDashboard']) ->middleware('role:staff')->name('staffDashboard');
 Route::get('/staff-createTicket', [StaffController::class, 'createTicketView'])->middleware('role:staff')->name('createTicket');
 Route::get('/staff-viewTicket', [StaffController::class, 'viewTicketView'])->middleware('role:staff')->name(name: 'viewTicket');
-Route::post('/staff/create-ticket',[StaffController::class, 'createTicket'])->name('ticket.create')->middleware();
+Route::post('/staff/create-ticket',[StaffController::class, 'createTicket'])->name('ticket.create')->middleware('role:staff');
+Route::get('/staff-viewProfile', [StaffController::class, 'profileView'])->middleware('role:staff')->name(name: 'staff.profile');
+Route::post('/staff/change-password',[StaffController::class, 'changePassword'])->name('staff.changePassword')->middleware('role:staff');
+Route::post('/staff/update-profile',[StaffController::class, 'updateProfile'])->name('staff.updateProfile')->middleware('role:staff');
+
+
 
 /*** Auth Routes*/
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');

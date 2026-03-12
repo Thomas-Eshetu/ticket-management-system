@@ -29,12 +29,55 @@ class AdminController extends Controller
       ->take(4)
       ->get();
 
+   
+
+$ticketTrend = Ticket::selectRaw('DAYNAME(created_at) as day,
+        COUNT(*) as created_count,
+        SUM(CASE WHEN status="resolved" THEN 1 ELSE 0 END) as resolved_count
+    ')
+    ->groupBy('day')
+    ->get();
+
+$daysOrder = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+$trendData = [
+    'created' => [],
+    'resolved' => []
+];
+
+foreach ($daysOrder as $day) {
+
+    $record = $ticketTrend->firstWhere('day', $day);
+
+    $trendData['created'][] = $record->created_count ?? 0;
+    $trendData['resolved'][] = $record->resolved_count ?? 0;
+
+}
+
+
+$monthlyTickets = Ticket::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+    ->whereYear('created_at', date('Y'))
+    ->groupBy('month')
+    ->orderBy('month')
+    ->get();
+
+$months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+$monthlyData = [];
+
+foreach(range(1,12) as $m){
+    $record = $monthlyTickets->firstWhere('month', $m);
+    $monthlyData[] = $record->total ?? 0;
+}
+
     return view("admin_pages.dashboard", compact(
       "activeTickets",
       "pendingTickets",
       "resolvedTickets",
       "delayedTickets",
-      "recentTickets"
+      "recentTickets",
+      "trendData",
+      "monthlyData"
     ));
   }
 
@@ -190,12 +233,12 @@ class AdminController extends Controller
       ->select('tickets.*', 'users.name as requester_name')
       ->get();
 
-
     return view("admin_pages.viewTickets", compact(
       "activeTickets",
       "pendingTickets",
       "resolvedTickets",
-      "delayedTickets"
+      "delayedTickets",
+
     ));
   }
 

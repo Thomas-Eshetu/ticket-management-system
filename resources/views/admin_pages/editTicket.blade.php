@@ -77,17 +77,13 @@
                                     <textarea name="" id="" class="form-control" readonly>{{ $ticket->issue_description }}</textarea>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="" class="form-label mb-1">Status</label>
+                                    <label for="" class="form-label mb-1">Status <span
+                                            class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <select class="form-select form-control" name="status" required>
-                                            @if ($ticket->status === 'pending')
-                                                <option value="{{ $ticket->status }}" selected>{{ $ticket->status }}
-                                                </option>
-                                            @endif
-
-                                            <option value="" disabled>Select</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="resolved">Resolved</option>
+                                            <option value="" disabled selected>Select</option>
+                                            <option value="pending" {{ $ticket->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="resolved" {{ $ticket->status == 'resolved' ? 'selected' : '' }}>Resolved</option>
                                         </select>
                                     </div>
                                 </div>
@@ -96,30 +92,21 @@
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <select class="form-select form-control" name="priority" required>
-                                            @if ($ticket->status === 'pending')
-                                                <option value="{{ $ticket->priority }}" selected>
-                                                    {{ $ticket->priority }}</option>
-                                            @endif
                                             <option value="" disabled selected>Select</option>
-                                            <option value="high">High</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="low">Low</option>
+                                            <option value="high" {{ $ticket->priority == 'high' ? 'selected' : '' }}>High</option>
+                                            <option value="medium" {{ $ticket->priority == 'medium' ? 'selected' : '' }}>Medium</option>
+                                            <option value="low" {{ $ticket->priority == 'low' ? 'selected' : '' }}>Low</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="" class="form-label mb-1">Assign Tech <span
+                                    <label for="" class="form-label mb-1">{{ $ticket->status == 'open' ? 'Assign Tech' : 'Assigned Tech'}} <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <select class="form-select form-control" name="assignedTech" required>
-                                            @if ($ticket->status === 'pending')
-                                                <option value="{{ $ticket->assigned_technician }}" selected>
-                                                    {{ $ticket->assigned_technician }}
-                                                </option>
-                                            @endif
                                             <option value="" disabled selected>Select</option>
-                                            <option value="Thomas">Thomas</option>
-                                            <option value="Mulugeta">Mulugeta</option>
+                                            <option value="Thomas" {{ $ticket->assigned_technician == 'Thomas' ? 'selected' : '' }}>Thomas</option>
+                                            <option value="Mulugeta" {{ $ticket->assigned_technician == 'Mulugeta' ? 'selected' : '' }}>Mulugeta</option>
                                         </select>
                                     </div>
                                 </div>
@@ -140,7 +127,7 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="" class="form-label mb-1">Remark <span
                                                 class="text-danger">*</span></label>
-                                        <textarea name="" id="" class="form-control" name="remark" required></textarea>
+                                        <textarea name="remark" id="" class="form-control" required></textarea>
                                     </div>
                                 @endif
 
