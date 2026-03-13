@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin - Add User</title>
+    <title>Purchasing - Add Supplier</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
@@ -26,13 +26,12 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">User Management</h3>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Add User</li>
+                    <ol class="breadcrumb mt-3 mb-4">
+                        <li class="breadcrumb-item active">Add Supplier</li>
                     </ol>
                     <hr>
                     <div class="addContainer">
-                        <h4 class="text-center">Add Staff User</h4>
+                        <h4 class="text-center">Add New Supplier</h4>
 
                         @if (session('success'))
                             <script>
@@ -49,57 +48,47 @@
                             </script>
                         @endif
                         <hr>
-                        <form action="{{ route('staff.store') }}" method="POST">
+                        <form action="{{ route('supplier.save') }}" method="POST">
                             @csrf
                             <div class="row">
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" name="staffName" required>
+                                    <label for="" class="form-label">Company Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="companyName" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Gender</label>
-                                    <select class="form-select" name="gender" required>
-                                        <option value="" selected disabled>Select</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
+                                    <label for="" class="form-label">Trade Type <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="tradeType" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Email</label>
+                                    <label for="" class="form-label">Email <span class="text-danger">*</span></label>
                                     <input type="email" class="form-control" name="email" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Phone</label>
+                                    <label for="" class="form-label">Phone <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="phone" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Department</label>
-                                    <input type="text" class="form-control" name="department" required>
+                                    <label for="" class="form-label">Country <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="country" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Position</label>
-                                    <input type="text" class="form-control" name="position" required>
+                                    <label for="" class="form-label">City <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="city" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Role</label>
-                                    <select class="form-select" name="role" required>
-                                        <option value="" selected disabled>Select</option>
-                                        <option value="staff">Staff</option>
-                                        <option value="purchaser">Purchaser</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
+                                    <label for="" class="form-label">Address <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="address" required>
                                 </div>
-
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Username</label>
-                                    <input type="text" class="form-control" name="userName" required>
+                                    <label for="" class="form-label">Tin Number <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" name="tinNo" required>
                                 </div>
 
                             </div>

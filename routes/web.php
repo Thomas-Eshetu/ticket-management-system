@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PurchasingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,3 +45,12 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/logout', [AuthController::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
+
+
+/***Purchasing Routes */
+Route::get('/purchasing/purchaser',[PurchasingController::class, 'viewPurchaser'])->name('view.purchaser');
+Route::get('/purchasing/supplier',[PurchasingController::class, 'viewSupplier'])->name('view.supplier');
+Route::get('/purchasing/product',[PurchasingController::class, 'viewProduct'])->name('view.product');
+Route::get('/purchasing/purchase',[PurchasingController::class, 'viewPurchase'])->name('view.purchase');
+Route::get('/purchasing/addSupplier',[PurchasingController::class, 'viewAddSupplier'])->name('view.addSupplier');
+Route::post('/purchasing/saveSupplier',[PurchasingController::class, 'addSupplier'])->name('supplier.save');

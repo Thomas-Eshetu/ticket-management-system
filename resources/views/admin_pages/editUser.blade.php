@@ -83,6 +83,7 @@
                                     <select class="form-select" name="role" required>
                                         <option value="" disabled>Select Role</option>
                                         <option value="staff" {{ $user->role == 'staff' ? 'selected' : '' }}>Staff</option>
+                                        <option value="purchaser" {{ $user->role == 'purchaser' ? 'selected' : '' }}>Purchaser</option>
                                         <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
                                     </select>
                                 </div>

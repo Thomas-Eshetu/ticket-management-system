@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin - View Users</title>
+    <title>Purchasing - Supplier </title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
@@ -33,9 +33,9 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">User Management</h3>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">View User</li>
+
+                    <ol class="breadcrumb mt-2 mb-4">
+                        <li class="breadcrumb-item active">View Suppliers</li>
                     </ol>
                     <hr>
                     {{-- @if (session('success'))
@@ -46,90 +46,59 @@
 
 
 
-                    <div class="table-responsive viewContainer">
-                        <table class="table table-bordered table-striped" id="usersTable">
+                    <div class="table-responsive viewContainer" style="font-size: 0.9rem;">
+                        <div class="addBtn text-end mb-3">
+                            <a href="{{ route('view.addSupplier') }}" class="btn btn-primary"><i
+                                    class="fa-regular fa-square-plus"></i> Add
+                                Supplier</a>
+                        </div>
+
+                        <table class="table table-bordered table-striped" id="supplierTable">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
+                                    <th>Company Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Role</th>
-                                    <th>Created At</th>
+                                    <th>Address</th>
+                                    <th>Tin No.</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @foreach ($users as $user)
+                                @forelse ($suppliers as $supplier)
                                     <tr>
-                                        <td>{{ $loop->iteration }} </td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->phone }}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $supplier->company_name }}</td>
+                                        <td>{{ $supplier->email }}</td>
+                                        <td>{{ $supplier->phone }}</td>
+                                        <td>{{ $supplier->address }}</td>
+                                        <td>{{ $supplier->tin_no }}</td>
                                         <td>
-                                            @if ($user->role === 'admin')
-                                                <span class="badge bg-primary">Administrator</span>
-                                            @elseif ($user->role === 'staff')
-                                                <span class="badge bg-secondary">Staff</span>
-                                            @elseif ($user->role === 'purchaser')
-                                                <span class="badge bg-warning text-dark">Purchaser</span>
+                                            @if ($supplier->status == 'active')
+                                                <span class="badge bg-success">Active</span>
                                             @else
-                                                <span class="badge bg-danger">Unidentified</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $user->created_at }}</td>
-                                        <td>
-                                            @if ($user->status === 'active')
-                                                <span class="badge bg-success">{{ $user->status }}</span>
-                                            @elseif ($user->status === 'deactive')
-                                                <span class="badge bg-danger">{{ $user->status }}</span>
-                                            @elseif ($user->status === 'locked')
-                                                <span class="badge bg-warning">{{ $user->status }}</span>
+                                                <span class="badge bg-danger">Inactive</span>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="" class="badge bg-primary text-white" title="View User"
-                                                data-bs-toggle="modal" data-bs-target="#viewUserModal"
-                                                data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                                data-gender="{{ $user->gender }}" data-email="{{ $user->email }}"
-                                                data-phone="{{ $user->phone }}"
-                                                data-department="{{ $user->department }}"
-                                                data-position="{{ $user->position }}" data-role="{{ $user->role }}"
-                                                data-status="{{ $user->status }}"
-                                                data-created_at="{{ $user->created_at }}"
-                                                data-updated_at="{{ $user->updated_at }}"><i
-                                                    class="fas fa-eye"></i></a>
-                                            <a href="{{ url('/edit-user', $user->id) }}"
-                                                class="badge bg-warning text-white" title="Edit User"><i
-                                                    class="fas fa-edit"></i></a>
-                                            <a href="{{ route('reset.user', $user->id) }}"
-                                                class="badge bg-warning text-white reset-btn"
-                                                data-url="{{ route('reset.user', $user->id) }}" title="Reset Password">
-                                                <i class="fas fa-key"></i>
-                                            </a>
+                                            <a href="#" class="badge bg-primary">View</a>
+                                            <a href="#" class="badge bg-warning">Edit</a>
 
-                                            @if ($user->status === 'locked')
-                                                <a href="" class="badge bg-warning text-white unlock-btn"
-                                                    title="Unlock User"
-                                                    data-url="{{ route('active.user', $user->id) }}"><i
-                                                        class="fas fa-unlock"></i></a>
-                                            @elseif ($user->status === 'deactive')
-                                                <a href="{{ route('active.user', $user->id) }}"
-                                                    class="badge bg-success text-white active-btn" title="Activate User"
-                                                    data-url="{{ route('active.user', $user->id) }}"><i
-                                                        class="fa-solid fa-user-check"></i></a>
-                                            @elseif ($user->status === 'active')
-                                                <a href="{{ route('deactive.user', $user->id) }}"
-                                                    class="badge bg-danger text-white deactive-btn"
-                                                    title="Deactivate User"
-                                                    data-url="{{ route('deactive.user', $user->id) }}"><i
-                                                        class="fa-solid fa-ban"></i></a>
+                                            @if ($supplier->status == 'active')
+                                                <a href="#" class="badge bg-danger">Inactive</a>
+                                            @else
+                                                <a href="#" class="badge bg-success">Active</a>
                                             @endif
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">No Suppliers Found</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -141,11 +110,9 @@
         </div>
     </div>
 
-    @include('modals.viewUserModal')
-
     <script>
         $(document).ready(function() {
-            $('#usersTable').DataTable({
+            $('#supplierTable').DataTable({
                 pageLength: 10,
                 lengthMenu: [
                     [10, 25, 50, 100],
@@ -270,7 +237,7 @@
     @endif
 
     <!---Script to populate the modal--->
-    <script>
+    {{-- <script>
         document.getElementById('viewUserModal').addEventListener('show.bs.modal', function(event) {
             const btn = event.relatedTarget;
 
@@ -285,7 +252,7 @@
             document.getElementById('modal-createdAt').textContent = btn.getAttribute('data-created_at');
             document.getElementById('modal-updatedAt').textContent = btn.getAttribute('data-updated_at');
         });
-    </script>
+    </script> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>

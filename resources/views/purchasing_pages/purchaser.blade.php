@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Admin - View Users</title>
+    <title>Admin - View Purchaser</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/css/adminStyle.css" rel="stylesheet" />
     <link href="/css/style.css" rel="stylesheet" />
@@ -33,9 +33,9 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">User Management</h3>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">View User</li>
+                    
+                    <ol class="breadcrumb mt-2 mb-4">
+                        <li class="breadcrumb-item active">View Purchasers</li>
                     </ol>
                     <hr>
                     {{-- @if (session('success'))
