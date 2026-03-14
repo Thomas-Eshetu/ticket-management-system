@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,8 @@ class PurchasingController extends Controller
     }
     public function viewProduct()
     {
-        return view('purchasing_pages.product');
+        $products = Product::latest()->get();
+        return view('purchasing_pages.product', compact('products'));
     }
     public function viewPurchase()
     {
@@ -57,5 +59,28 @@ class PurchasingController extends Controller
         ]);
 
         return redirect()->to('/purchasing/supplier')->with('success', 'Supplier saved successfully!');
+    }
+
+    public function viewAddProduct()
+    {
+        return view('purchasing_pages.addProduct');
+    }
+
+    public function addProduct(Request $request)
+    {
+        Product::create([
+            'product_type' => $request->productType,
+            'product_name' => $request->productName,
+            'product_brand' => $request->productBrand,
+            'product_code' => $request->productCode,
+            'unit' => $request->unit,
+        ]);
+
+        return redirect()->to('/purchasing/product')->with('success', 'Product saved successfully!');
+    }
+
+    public function viewAddPurchase()
+    {
+        return view('purchasing_pages.addPurchase');
     }
 }

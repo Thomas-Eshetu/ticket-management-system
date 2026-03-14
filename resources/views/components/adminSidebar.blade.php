@@ -70,7 +70,7 @@
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#purchasing"
                       aria-expanded="false" aria-controls="collapseLayouts">
                       <div class="sb-nav-link-icon"><i class="fa-solid fa-store"></i></div>
-                      Purchasing Mgt
+                      Purchasing Mg't
                       <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
                   <div class="collapse" id="purchasing" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">

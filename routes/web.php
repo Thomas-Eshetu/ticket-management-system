@@ -54,3 +54,6 @@ Route::get('/purchasing/product',[PurchasingController::class, 'viewProduct'])->
 Route::get('/purchasing/purchase',[PurchasingController::class, 'viewPurchase'])->name('view.purchase');
 Route::get('/purchasing/addSupplier',[PurchasingController::class, 'viewAddSupplier'])->name('view.addSupplier');
 Route::post('/purchasing/saveSupplier',[PurchasingController::class, 'addSupplier'])->name('supplier.save');
+Route::get('/purchasing/addProduct',[PurchasingController::class, 'viewAddProduct'])->name('view.addProduct');
+Route::post('/purchasing/saveProduct',[PurchasingController::class, 'addProduct'])->name('product.save');
+Route::get('/purchasing/addPurchase',[PurchasingController::class, 'viewAddPurchase'])->name('view.addPurchase');

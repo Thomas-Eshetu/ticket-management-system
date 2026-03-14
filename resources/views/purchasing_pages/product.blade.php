@@ -48,7 +48,8 @@
 
                     <div class="table-responsive viewContainer">
                         <div class="addBtn text-end mb-3">
-                            <a href="" class="btn btn-primary"><i class="fa-regular fa-square-plus"></i> Add
+                            <a href="{{ route('view.addProduct') }}" class="btn btn-primary"><i
+                                    class="fa-regular fa-square-plus"></i> Add
                                 Product</a>
                         </div>
 
@@ -56,27 +57,37 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Role</th>
-                                    <th>Created At</th>
+                                    <th>Product Code</th>
+                                    <th>Product Type</th>
+                                    <th>Product Name</th>
+                                    <th>Product Brand</th>
+                                    <th>Unit</th>
+                                    <th>Quantity</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                </tr>
+                                @foreach ($products as $product)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $product->product_code }}</td>
+                                        <td>{{ $product->product_type }}</td>
+                                        <td>{{ $product->product_name }}</td>
+                                        <td>{{ $product->product_brand }}</td>
+                                        <td>{{ $product->unit }}</td>
+                                        <td>{{ $product->quantity }}</td>
+                                        <td>
+                                            <span
+                                                class="{{ $product->status == 'active' ? 'badge bg-success' : 'badge bg-danger' }}">{{ $product->status }}</span>
+                                        </td>
+                                        <td>
+                                            <a href="" class="badge bg-primary">View</a>
+                                            <a href="" class="badge bg-warning">Edit</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

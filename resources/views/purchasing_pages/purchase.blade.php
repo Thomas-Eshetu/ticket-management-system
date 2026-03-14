@@ -48,7 +48,7 @@
 
                     <div class="table-responsive viewContainer">
                         <div class="addBtn text-end mb-3">
-                            <a href="" class="btn btn-primary"><i class="fa-regular fa-square-plus"></i> Add
+                            <a href="{{ route('view.addPurchase') }}" class="btn btn-primary"><i class="fa-regular fa-square-plus"></i> Add
                                 Purchase</a>
                         </div>
 
