@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('unit_price', 10, 2)->default(0);
             $table->decimal('total_price', 10, 2)->default(0);
+            $table->integer('tax_percent')->nullable();
             $table->decimal('tax', 10, 2)->default(0);
             $table->decimal('grand_total', 10, 2)->default(0);
             $table->string('purchase_date');

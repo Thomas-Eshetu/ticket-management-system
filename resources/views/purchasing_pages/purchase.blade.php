@@ -46,9 +46,10 @@
 
 
 
-                    <div class="table-responsive viewContainer">
+                    <div class="table-responsive viewContainer" style="font-size: 0.9rem;">
                         <div class="addBtn text-end mb-3">
-                            <a href="{{ route('view.addPurchase') }}" class="btn btn-primary"><i class="fa-regular fa-square-plus"></i> Add
+                            <a href="{{ route('view.addPurchase') }}" class="btn btn-primary"><i
+                                    class="fa-regular fa-square-plus"></i> Add
                                 Purchase</a>
                         </div>
 
@@ -56,27 +57,64 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Role</th>
-                                    <th>Created At</th>
+                                    <th>Supplier</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price <span class="text-muted" style="font-size:0.75rem;">(ETB)</span></th>
+                                    <th>Total Price <span class="text-muted" style="font-size:0.75rem;">(ETB)</span>
+                                    </th>
+                                    <th>Tax <span class="text-muted" style="font-size:0.75rem;">(ETB)</span></th>
+                                    <th>Grand Total <span class="text-muted" style="font-size:0.75rem;">(ETB)</span>
+                                    </th>
+                                    <th>Purchase Date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                </tr>
+                                @foreach ($purchases as $purchase)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $purchase->supplierName }}</td>
+                                        <td>{{ $purchase->productName }}</td>
+                                        <td>{{ $purchase->quantity }}</td>
+                                        <td>{{ $purchase->unit_price }}</td>
+                                        <td>{{ $purchase->total_price }}</td>
+                                        <td>{{ $purchase->tax }}</td>
+                                        <td>{{ $purchase->grand_total }}</td>
+                                        <td>{{ $purchase->purchase_date }}</td>
+                                        <td>
+                                            @if ($purchase->status == 'pending')
+                                                <span class="badge bg-warning">{{ $purchase->status }}</span>
+                                            @elseif ($purchase->status == 'received')
+                                                <span class="badge bg-primary">{{ $purchase->status }}</span>
+                                            @elseif ($purchase->status == 'stocked')
+                                                <span class="badge bg-success">{{ $purchase->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#viewPurchaseModal"
+                                                class="badge bg-primary"
+                                                data-supplierName="{{ $purchase->supplierName }}"
+                                                data-productName="{{ $purchase->productName }}"
+                                                data-quantity="{{ $purchase->quantity }}"
+                                                data-unitPrice="{{ $purchase->unit_price }}"
+                                                data-totalPrice="{{ $purchase->total_price }}"
+                                                data-taxPercent="{{ $purchase->tax_percent }}"
+                                                data-tax="{{ $purchase->tax }}"
+                                                data-grandTotal="{{ $purchase->grand_total }}"
+                                                data-purchaseDate="{{ $purchase->purchase_date }}"
+                                                data-status="{{ $purchase->status }}">view</a>
+
+                                            @if ($purchase->status !== 'stocked')
+                                                <a href="{{ route('purchase.edit', $purchase->id) }}"
+                                                    class="badge bg-warning">Edit</a>
+                                            @endif
+
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -87,6 +125,8 @@
 
         </div>
     </div>
+
+    @include('modals.viewPurchaseModal')
 
     <script>
         $(document).ready(function() {
@@ -215,22 +255,57 @@
     @endif
 
     <!---Script to populate the modal--->
-    {{-- <script>
-        document.getElementById('viewUserModal').addEventListener('show.bs.modal', function(event) {
+    <script>
+        document.getElementById('viewPurchaseModal').addEventListener('show.bs.modal', function(event) {
             const btn = event.relatedTarget;
+            let unitPrice = btn.getAttribute('data-unitPrice');
+            let totalPrice = btn.getAttribute('data-totalPrice');
+            let tax = btn.getAttribute('data-tax');
+            let grandTotal = btn.getAttribute('data-grandTotal');
 
-            document.getElementById('modal-name').textContent = btn.getAttribute('data-name');
-            document.getElementById('modal-gender').textContent = btn.getAttribute('data-gender');
-            document.getElementById('modal-email').textContent = btn.getAttribute('data-email');
-            document.getElementById('modal-phone').textContent = btn.getAttribute('data-phone');
-            document.getElementById('modal-department').textContent = btn.getAttribute('data-department');
-            document.getElementById('modal-position').textContent = btn.getAttribute('data-position');
-            document.getElementById('modal-role').textContent = btn.getAttribute('data-role');
-            document.getElementById('modal-status').textContent = btn.getAttribute('data-status');
-            document.getElementById('modal-createdAt').textContent = btn.getAttribute('data-created_at');
-            document.getElementById('modal-updatedAt').textContent = btn.getAttribute('data-updated_at');
+            document.getElementById('modal-supplier').textContent = btn.getAttribute('data-supplierName');
+            document.getElementById('modal-product').textContent = btn.getAttribute('data-productName');
+            document.getElementById('modal-quantity').textContent = btn.getAttribute('data-quantity');
+
+            document.getElementById('modal-unitPrice').textContent =
+                Number(unitPrice).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            document.getElementById('modal-totalPrice').textContent =
+                Number(totalPrice).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+            document.getElementById('modal-taxPercent').textContent = btn.getAttribute('data-taxPercent');
+
+            document.getElementById('modal-tax').textContent = Number(tax).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            document.getElementById('modal-grandTotal').textContent = Number(grandTotal).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            document.getElementById('modal-purchaseDate').textContent = btn.getAttribute('data-purchaseDate');
+
+            let status = btn.getAttribute('data-status');
+            let statusElement = document.getElementById('modal-status');
+
+            if (status === 'stocked') {
+                statusElement.innerHTML = '<span class="badge bg-success">' + status + '</span>';
+            } else if (status === 'received') {
+                statusElement.innerHTML = '<span class="badge bg-primary">' + status + '</span>';
+            } else if (status === 'pending') {
+                statusElement.innerHTML = '<span class="badge bg-warning">' + status + '</span>';
+            } else {
+                statusElement.innerHTML = '<span class="badge bg-secondary">' + status + '</span>';
+            }
         });
-    </script> --}}
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>

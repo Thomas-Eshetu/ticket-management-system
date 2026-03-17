@@ -46,7 +46,7 @@
 
 
 
-                    <div class="table-responsive viewContainer">
+                    <div class="table-responsive viewContainer" style="font-size: 0.9rem;">
                         <table class="table table-bordered table-striped" id="usersTable">
                             <thead>
                                 <tr>

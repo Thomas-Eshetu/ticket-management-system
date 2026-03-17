@@ -46,7 +46,7 @@
 
 
 
-                    <div class="table-responsive viewContainer">
+                    <div class="table-responsive viewContainer" style="font-size: 0.9rem;">
                         <div class="addBtn text-end mb-3">
                             <a href="{{ route('view.addProduct') }}" class="btn btn-primary"><i
                                     class="fa-regular fa-square-plus"></i> Add
@@ -79,8 +79,14 @@
                                         <td>{{ $product->unit }}</td>
                                         <td>{{ $product->quantity }}</td>
                                         <td>
-                                            <span
-                                                class="{{ $product->status == 'active' ? 'badge bg-success' : 'badge bg-danger' }}">{{ $product->status }}</span>
+                                            @if ($product->quantity == 0)
+                                                <span class="badge bg-danger">out of stock</span>
+                                            @elseif ($product->quantity < 5)
+                                                <span class="badge bg-warning">low stock</span>
+                                            @else
+                                                <span
+                                                    class="{{ $product->status == 'active' ? 'badge bg-success' : 'badge bg-danger' }}">{{ $product->status }}</span>
+                                            @endif
                                         </td>
                                         <td>
                                             <a href="" class="badge bg-primary">View</a>
