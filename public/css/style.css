@@ -58,6 +58,15 @@ body {
     padding: 1rem;
 }
 
+.addPurchaseContainer{
+   width: 100%;
+    max-width: 1300px;
+    background-color: #fcfcfc;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin: auto;
+    padding: 1rem; 
+}
 /* STAFF LAYOUT */
 .staffContainer {
     display: flex;

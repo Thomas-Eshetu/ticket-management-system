@@ -56,34 +56,23 @@
                         <table class="table table-bordered table-striped" id="usersTable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>Supplier</th>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price <span class="text-muted" style="font-size:0.75rem;">(ETB)</span></th>
-                                    <th>Total Price <span class="text-muted" style="font-size:0.75rem;">(ETB)</span>
-                                    </th>
-                                    <th>Tax <span class="text-muted" style="font-size:0.75rem;">(ETB)</span></th>
-                                    <th>Grand Total <span class="text-muted" style="font-size:0.75rem;">(ETB)</span>
-                                    </th>
-                                    <th>Purchase Date</th>
+                                    <th>Product Type</th>
+                                    <th>Total Price <span class="text-muted" style="font-size:0.7rem;">(ETB)</span></th>
+                                    <th>Tax <span class="text-muted" style="font-size:0.7rem;">(ETB)</span></th>
+                                    <th>Grand Total <span class="text-muted" style="font-size:0.7rem;">(ETB)</span></th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach ($purchases as $purchase)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $purchase->supplierName }}</td>
-                                        <td>{{ $purchase->productName }}</td>
-                                        <td>{{ $purchase->quantity }}</td>
-                                        <td>{{ $purchase->unit_price }}</td>
-                                        <td>{{ $purchase->total_price }}</td>
-                                        <td>{{ $purchase->tax }}</td>
-                                        <td>{{ $purchase->grand_total }}</td>
-                                        <td>{{ $purchase->purchase_date }}</td>
+                                        <td>{{ $purchase->companyName }}</td>
+                                        <td>{{ $purchase->productTypes }}</td>
+                                        <td>{{ number_format($purchase->total_price, 2) }}</td>
+                                        <td>{{ number_format($purchase->tax, 2) }}</td>
+                                        <td>{{ number_format($purchase->grand_total, 2) }}</td>
                                         <td>
                                             @if ($purchase->status == 'pending')
                                                 <span class="badge bg-warning">{{ $purchase->status }}</span>
@@ -93,25 +82,15 @@
                                                 <span class="badge bg-success">{{ $purchase->status }}</span>
                                             @endif
                                         </td>
+
                                         <td>
-                                            <a href="" data-bs-toggle="modal" data-bs-target="#viewPurchaseModal"
-                                                class="badge bg-primary"
-                                                data-supplierName="{{ $purchase->supplierName }}"
-                                                data-productName="{{ $purchase->productName }}"
-                                                data-quantity="{{ $purchase->quantity }}"
-                                                data-unitPrice="{{ $purchase->unit_price }}"
-                                                data-totalPrice="{{ $purchase->total_price }}"
-                                                data-taxPercent="{{ $purchase->tax_percent }}"
-                                                data-tax="{{ $purchase->tax }}"
-                                                data-grandTotal="{{ $purchase->grand_total }}"
-                                                data-purchaseDate="{{ $purchase->purchase_date }}"
-                                                data-status="{{ $purchase->status }}">view</a>
+                                            <a href="" class="badge bg-primary" data-id="{{ $purchase->id }}"
+                                                data-bs-toggle="modal" data-bs-target="#viewPurchaseModal">view</a>
 
                                             @if ($purchase->status !== 'stocked')
                                                 <a href="{{ route('purchase.edit', $purchase->id) }}"
                                                     class="badge bg-warning">Edit</a>
                                             @endif
-
                                         </td>
                                     </tr>
                                 @endforeach
@@ -127,6 +106,91 @@
     </div>
 
     @include('modals.viewPurchaseModal')
+    <script>
+        document.getElementById('viewPurchaseModal').addEventListener('show.bs.modal', function(event) {
+
+            document.getElementById('modal-loading').style.display = 'block';
+
+            const btn = event.relatedTarget;
+            const purchaseId = btn.getAttribute('data-id');
+
+            fetch(`/purchase/details/${purchaseId}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById('modal-loading').style.display = 'none';
+
+                    let purchase = data.purchase;
+                    let items = data.items;
+
+                    // =====================
+                    // Supplier Info
+                    // =====================
+                    document.getElementById('modal-supplier').textContent = purchase.company_name;
+                    document.getElementById('modal-tradeType').textContent = purchase.trade_type ?? '';
+                    document.getElementById('modal-supplierEmail').textContent = purchase.email ?? '';
+                    document.getElementById('modal-supplierPhone').textContent = purchase.phone ?? '';
+                    document.getElementById('modal-supplierCountry').textContent = purchase.country ?? '';
+                    document.getElementById('modal-supplierCity').textContent = purchase.city ?? '';
+                    document.getElementById('modal-supplierAddress').textContent = purchase.address ?? '';
+                    document.getElementById('modal-tinNo').textContent = purchase.tin_no ?? '';
+
+                    // =====================
+                    // Items Table
+                    // =====================
+                    let tbody = document.getElementById('modal-items');
+                    tbody.innerHTML = '';
+
+                    items.forEach(item => {
+
+                        let row = `
+                    <tr>
+                        <td>${item.product_type}</td>
+                        <td>${item.product_name}</td>
+                        <td>${item.product_brand ?? ''}</td>
+                        <td>${item.quantity}</td>
+                        <td>${Number(item.unit_price).toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                        <td>${Number(item.total_price).toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                        <td>${purchase.purchase_date}</td>
+                        <td>${getStatusBadge(purchase.status)}</td>
+                    </tr>
+                `;
+
+                        tbody.innerHTML += row;
+                    });
+
+                    // =====================
+                    // Totals
+                    // =====================
+                    document.getElementById('modal-totalPriceAll').textContent =
+                        Number(purchase.total_amount ?? purchase.total_price).toLocaleString(undefined, {
+                            minimumFractionDigits: 2
+                        });
+
+                    document.getElementById('modal-tax').textContent =
+                        Number(purchase.tax).toLocaleString(undefined, {
+                            minimumFractionDigits: 2
+                        });
+
+                    document.getElementById('modal-grandTotal').textContent =
+                        Number(purchase.grand_total).toLocaleString(undefined, {
+                            minimumFractionDigits: 2
+                        });
+
+                });
+        });
+
+        // Status badge function
+        function getStatusBadge(status) {
+            if (status === 'stocked') {
+                return '<span class="badge bg-success">stocked</span>';
+            } else if (status === 'received') {
+                return '<span class="badge bg-primary">received</span>';
+            } else {
+                return '<span class="badge bg-warning">pending</span>';
+            }
+        }
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -253,59 +317,6 @@
             });
         </script>
     @endif
-
-    <!---Script to populate the modal--->
-    <script>
-        document.getElementById('viewPurchaseModal').addEventListener('show.bs.modal', function(event) {
-            const btn = event.relatedTarget;
-            let unitPrice = btn.getAttribute('data-unitPrice');
-            let totalPrice = btn.getAttribute('data-totalPrice');
-            let tax = btn.getAttribute('data-tax');
-            let grandTotal = btn.getAttribute('data-grandTotal');
-
-            document.getElementById('modal-supplier').textContent = btn.getAttribute('data-supplierName');
-            document.getElementById('modal-product').textContent = btn.getAttribute('data-productName');
-            document.getElementById('modal-quantity').textContent = btn.getAttribute('data-quantity');
-
-            document.getElementById('modal-unitPrice').textContent =
-                Number(unitPrice).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-            document.getElementById('modal-totalPrice').textContent =
-                Number(totalPrice).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-
-            document.getElementById('modal-taxPercent').textContent = btn.getAttribute('data-taxPercent');
-
-            document.getElementById('modal-tax').textContent = Number(tax).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-
-            document.getElementById('modal-grandTotal').textContent = Number(grandTotal).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-
-            document.getElementById('modal-purchaseDate').textContent = btn.getAttribute('data-purchaseDate');
-
-            let status = btn.getAttribute('data-status');
-            let statusElement = document.getElementById('modal-status');
-
-            if (status === 'stocked') {
-                statusElement.innerHTML = '<span class="badge bg-success">' + status + '</span>';
-            } else if (status === 'received') {
-                statusElement.innerHTML = '<span class="badge bg-primary">' + status + '</span>';
-            } else if (status === 'pending') {
-                statusElement.innerHTML = '<span class="badge bg-warning">' + status + '</span>';
-            } else {
-                statusElement.innerHTML = '<span class="badge bg-secondary">' + status + '</span>';
-            }
-        });
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>

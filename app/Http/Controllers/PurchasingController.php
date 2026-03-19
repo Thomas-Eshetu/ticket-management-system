@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\PurchaseItems;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PurchasingController extends Controller
 {
@@ -31,14 +33,49 @@ class PurchasingController extends Controller
     }
     public function viewPurchase()
     {
-        // $purchases = Purchase::all();
+        $purchaseItems = PurchaseItems::join('products', 'purchase_items.product_id', '=', 'products.id')
+            ->join('purchases', 'purchase_items.purchase_id', '=', 'purchases.id')
+            ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
+            ->select(
+                'purchase_items.*',
+                'purchase_items.quantity as itemQuantity',
+                'products.*',
+                'suppliers.*',
+                'purchases.purchase_date',
+                'purchases.status'
+            )->get();
+
+        // $purchases = Purchase::join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
+        // ->join('purchase_items', 'purchases.id', '=', 'purchase_items.purchase_id')
+        // ->join('products', 'products.id', '=', 'purchase_items.product_id')
+        // ->select('purchases.*', 'suppliers.company_name as companyName', 'products.product_type as productType')->get();
+
         $purchases = Purchase::join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
-            ->join('products', 'purchases.product_id', '=', 'products.id')
-            ->select('purchases.*', 'suppliers.company_name as supplierName', 'products.product_name as productName')
-            ->latest()
+            ->join('purchase_items', 'purchases.id', '=', 'purchase_items.purchase_id')
+            ->join('products', 'products.id', '=', 'purchase_items.product_id')
+            ->select(
+                'purchases.id',
+                'purchases.purchase_date',
+                'suppliers.company_name as companyName',
+                'purchases.total_price',
+                'purchases.tax',
+                'purchases.grand_total',
+                'purchases.status',
+
+                DB::raw('GROUP_CONCAT(DISTINCT products.product_type) as productTypes')
+            )
+            ->groupBy(
+                'purchases.id',
+                'purchases.purchase_date',
+                'suppliers.company_name',
+                'purchases.total_price',
+                'purchases.tax',
+                'purchases.grand_total',
+                'purchases.status'
+            )
             ->get();
 
-        return view('purchasing_pages.purchase', compact('purchases'));
+        return view('purchasing_pages.purchase', compact('purchaseItems', 'purchases'));
     }
 
     public function viewAddSupplier()
@@ -98,20 +135,31 @@ class PurchasingController extends Controller
 
     public function addPurchase(Request $request)
     {
-        Purchase::create([
+        // Step 1: Create purchase (header)
+        $purchase = Purchase::create([
             'supplier_id' => $request->supplier,
-            'product_id' => $request->product,
             'user_id' => Auth::id(),
-            'quantity' => $request->quantity,
-            'unit_price' => $request->unitPrice,
             'total_price' => $request->totalPrice,
-            'tax_percent' => $request->taxtPercent,
             'tax' => $request->tax,
             'grand_total' => $request->grandTotal,
             'purchase_date' => $request->purchaseDate,
             'status' => 'pending',
         ]);
 
+        // Step 2: Save items
+        foreach ($request->product as $index => $productId) {
+
+            $qty = $request->quantity[$index];
+            $price = $request->unitPrice[$index];
+
+            PurchaseItems::create([
+                'purchase_id' => $purchase->id,
+                'product_id' => $productId,
+                'quantity' => $qty,
+                'unit_price' => $price,
+                'total_price' => $qty * $price,
+            ]);
+        }
         return redirect()->to('/purchasing/purchase')->with('success', 'Purchase saved successfully!');
     }
 
@@ -161,5 +209,46 @@ class PurchasingController extends Controller
         }
 
         return redirect()->to('/purchasing/purchase')->with('success', 'Purchase updated successfully!');
+    }
+
+
+
+    public function getPurchaseDetails($id)
+    {
+        // Purchase + Supplier
+        $purchase = DB::table('purchases')
+            ->join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
+            ->select(
+                'purchases.*',
+                'suppliers.company_name',
+                'suppliers.trade_type',
+                'suppliers.email',
+                'suppliers.phone',
+                'suppliers.country',
+                'suppliers.city',
+                'suppliers.address',
+                'suppliers.tin_no'
+            )
+            ->where('purchases.id', $id)
+            ->first();
+
+        // Items
+        $items = DB::table('purchase_items')
+            ->join('products', 'purchase_items.product_id', '=', 'products.id')
+            ->select(
+                'products.product_type',
+                'products.product_name',
+                'products.product_brand',
+                'purchase_items.quantity',
+                'purchase_items.unit_price',
+                'purchase_items.total_price'
+            )
+            ->where('purchase_items.purchase_id', $id)
+            ->get();
+
+        return response()->json([
+            'purchase' => $purchase,
+            'items' => $items
+        ]);
     }
 }

@@ -6,19 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
-    protected $table = 'purchases';
+     protected $table = 'purchases';
     protected $fillable = [
         'supplier_id',
-        'product_id',
         'user_id',
-        'purchaser_id',
-        'quantity',
-        'unit_price',
         'total_price',
-        'tax_percent',
         'tax',
         'grand_total',
         'purchase_date',
         'status',
     ];
+
+      public function items()
+{
+    return $this->hasMany(PurchaseItems::class);
+}
+
+public function supplier()
+{
+    return $this->belongsTo(Supplier::class);
+}
+
 }
