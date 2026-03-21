@@ -59,11 +59,10 @@
                                     <th>#</th>
                                     <th>Product Code</th>
                                     <th>Product Type</th>
-                                    <th>Product Name</th>
                                     <th>Product Brand</th>
                                     <th>Unit</th>
                                     <th>Quantity</th>
-                                    <th>Status</th>
+                                    <th>Stock Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -74,7 +73,6 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $product->product_code }}</td>
                                         <td>{{ $product->product_type }}</td>
-                                        <td>{{ $product->product_name }}</td>
                                         <td>{{ $product->product_brand }}</td>
                                         <td>{{ $product->unit }}</td>
                                         <td>{{ $product->quantity }}</td>
@@ -89,7 +87,16 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="" class="badge bg-primary">View</a>
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#viewProductModal" class="badge bg-primary"
+                                            data-id="{{ $product->id }}"
+                                            data-product_code="{{ $product->product_code }}"
+                                            data-product_type="{{ $product->product_type }}"
+                                            data-product_name="{{ $product->product_name }}"
+                                            data-product_brand="{{ $product->product_brand }}"
+                                            data-unit="{{ $product->unit }}"
+                                            data-quantity="{{ $product->quantity }}"
+                                            data-status="{{ $product->status }}"
+                                            >View</a>
                                             <a href="" class="badge bg-warning">Edit</a>
                                         </td>
                                     </tr>
@@ -101,7 +108,7 @@
                 </div>
             </main>
             @include('components.adminFooter')
-
+            @include('modals.viewProductModal')
         </div>
     </div>
 
@@ -232,22 +239,19 @@
     @endif
 
     <!---Script to populate the modal--->
-    {{-- <script>
-        document.getElementById('viewUserModal').addEventListener('show.bs.modal', function(event) {
+    <script>
+        document.getElementById('viewProductModal').addEventListener('show.bs.modal', function(event) {
             const btn = event.relatedTarget;
 
-            document.getElementById('modal-name').textContent = btn.getAttribute('data-name');
-            document.getElementById('modal-gender').textContent = btn.getAttribute('data-gender');
-            document.getElementById('modal-email').textContent = btn.getAttribute('data-email');
-            document.getElementById('modal-phone').textContent = btn.getAttribute('data-phone');
-            document.getElementById('modal-department').textContent = btn.getAttribute('data-department');
-            document.getElementById('modal-position').textContent = btn.getAttribute('data-position');
-            document.getElementById('modal-role').textContent = btn.getAttribute('data-role');
+            document.getElementById('modal-productCode').textContent = btn.getAttribute('data-product_code');
+            document.getElementById('modal-productType').textContent = btn.getAttribute('data-product_type');
+            document.getElementById('modal-productBrand').textContent = btn.getAttribute('data-product_brand');
+            document.getElementById('modal-productName').textContent = btn.getAttribute('data-product_name');
+            document.getElementById('modal-unit').textContent = btn.getAttribute('data-unit');
+            document.getElementById('modal-quantity').textContent = btn.getAttribute('data-quantity');
             document.getElementById('modal-status').textContent = btn.getAttribute('data-status');
-            document.getElementById('modal-createdAt').textContent = btn.getAttribute('data-created_at');
-            document.getElementById('modal-updatedAt').textContent = btn.getAttribute('data-updated_at');
         });
-    </script> --}}
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>

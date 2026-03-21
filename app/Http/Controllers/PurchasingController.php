@@ -90,8 +90,15 @@ class PurchasingController extends Controller
         $request->validate([
             'email'  => 'required|email|unique:suppliers,email',
             'phone'  => 'required|string|max:20|unique:suppliers,phone',
-            'tinNo' => 'required|unique:suppliers,tin_no',
         ]);
+
+        // Check if TIN number already exists
+        $existingSupplier = Supplier::where('tin_no', $request->tinNo)->first();
+
+        if ($existingSupplier) {
+            return redirect()->back()
+                ->with('error', 'Company already registered with this TIN number.');
+        }
 
         Supplier::create([
             'company_name' => $request->companyName,
@@ -165,52 +172,65 @@ class PurchasingController extends Controller
 
     public function editPurchaseView($id)
     {
-        $purchase = Purchase::join('suppliers', 'purchases.supplier_id', '=', 'suppliers.id')
-            ->join('products', 'purchases.product_id', '=', 'products.id')
-            ->select('purchases.*', 'suppliers.company_name as supplierName', 'products.product_name as productName', 'suppliers.id as supplierID', 'products.id as productID')->find($id);
+        $purchase = Purchase::findOrFail($id);
+        $purchaseItems = PurchaseItems::with('product')
+            ->where('purchase_id', $id)
+            ->get();
 
         $suppliers = Supplier::where('status', 'active')->get();
         $products = Product::where('status', 'active')->get();
 
-        return view('purchasing_pages.editPurchase', compact('purchase', 'suppliers', 'products'));
+        return view('purchasing_pages.editPurchase', compact('purchase', 'purchaseItems', 'suppliers', 'products'));
     }
 
     public function updatePurchase(Request $request, $id)
     {
-        $purchase = Purchase::find($id);
-        if (!$purchase) {
-            return redirect()->back()->with('error', 'Purchase not found!');
-        }
+        $purchase = Purchase::findOrFail($id);
 
         // Store old status before update
         $oldStatus = $purchase->status;
 
+        // Step 1: Update purchase header
         $purchase->update([
-            'supplier_id' => $request->supplier,
-            'product_id' => $request->product,
-            'quantity' => $request->quantity,
-            'unit_price' => $request->unitPrice,
-            'total_price' => $request->totalPrice,
-            'tax_percent' => $request->taxtPercent,
-            'tax' => $request->tax,
-            'grand_total' => $request->grandTotal,
+            'supplier_id'   => $request->supplier,
+            'user_id'       => Auth::id(),
+            'total_price'   => $request->totalPrice,
+            'tax'           => $request->tax,
+            'grand_total'   => $request->grandTotal,
             'purchase_date' => $request->purchaseDate,
-            'status' => $request->status,
+            'status'        => $request->status,
         ]);
 
+        // Step 2: Delete old items and re-insert updated ones
+        PurchaseItems::where('purchase_id', $id)->delete();
+
+        foreach ($request->product as $index => $productId) {
+            $qty   = $request->quantity[$index];
+            $price = $request->unitPrice[$index];
+
+            PurchaseItems::create([
+                'purchase_id' => $id,
+                'product_id'  => $productId,
+                'quantity'    => $qty,
+                'unit_price'  => $price,
+                'total_price' => $qty * $price,
+            ]);
+        }
+
+        // Step 3: Update product stock if status changed to 'stocked'
         if ($oldStatus !== 'stocked' && $request->status === 'stocked') {
+            foreach ($request->product as $index => $productId) {
+                $product = Product::find($productId);
 
-            $product = Product::find($request->product);
-
-            if ($product) {
-                $product->quantity += $request->quantity;
-                $product->save();
+                if ($product) {
+                    $product->quantity += $request->quantity[$index];
+                    $product->save();
+                }
             }
         }
 
         return redirect()->to('/purchasing/purchase')->with('success', 'Purchase updated successfully!');
     }
-
 
 
     public function getPurchaseDetails($id)

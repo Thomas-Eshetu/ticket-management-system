@@ -105,21 +105,6 @@
                                         Item</button>
                                 </div>
 
-
-
-                                {{-- <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Quantity <span
-                                            class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="quantity" id="quantity" required>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Unit Price <span class="text-muted"
-                                            style="font-size:0.75rem;">(ETB)</span> <span
-                                            class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="unitPrice" id="unitPrice" required>
-                                </div> --}}
-
                                 <div class="col-md-6 mb-3">
                                     <label for="" class="form-label">Total Price <span class="text-muted"
                                             style="font-size:0.7rem;">(ETB)</span> <span
@@ -148,7 +133,8 @@
                                     <label for="" class="form-label">Purchase Date <span
                                             class="text-danger">*</span></label>
                                     <input type="date" class="form-control" name="purchaseDate"
-                                        max="{{ date('Y-m-d') }}" required>
+                                        min="{{ date('Y-m-d', strtotime('-5 days')) }}" max="{{ date('Y-m-d') }}"
+                                        required>
                                 </div>
 
                             </div>

@@ -47,47 +47,70 @@
                                 });
                             </script>
                         @endif
+
+                        @if (session('error'))
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: "{{ session('error') }}",
+                                        confirmButtonColor: '#dc3545',
+                                        timer: 4000,
+                                        showConfirmButton: false,
+                                    });
+                                });
+                            </script>
+                        @endif
                         <hr>
                         <form action="{{ route('supplier.save') }}" method="POST">
                             @csrf
                             <div class="row">
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Company Name <span class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Company Name <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="companyName" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Trade Type <span class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Trade Type <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="tradeType" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Email <span
+                                            class="text-danger">*</span></label>
                                     <input type="email" class="form-control" name="email" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Phone <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="phone" required>
+                                    <label for="" class="form-label">Phone <span
+                                            class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" name="phone" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Country <span class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Country <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="country" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">City <span class="text-danger">*</span></label>
+                                    <label for="" class="form-label">City <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="city" required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Address <span class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Address <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="address" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Tin Number <span class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Tin Number <span
+                                            class="text-danger">*</span></label>
                                     <input type="number" class="form-control" name="tinNo" required>
                                 </div>
 

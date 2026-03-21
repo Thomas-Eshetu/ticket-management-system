@@ -30,7 +30,7 @@
                         <li class="breadcrumb-item active">Edit Purchase</li>
                     </ol>
                     <hr>
-                    <div class="addContainer">
+                    <div class="addPurchaseContainer">
                         <h4 class="text-center">Edit Purchase</h4>
 
                         @if (session('success'))
@@ -52,88 +52,112 @@
                             @csrf
                             <div class="row">
 
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label for="" class="form-label">Supplier <span
                                             class="text-danger">*</span></label>
-                                    <select name="supplier" id="" class="form-select" required>
-                                        <option value="{{ $purchase->supplierID }}" selected>{{ $purchase->supplierName }}</option>
+                                    <select name="supplier" class="form-select" required>
                                         <option value="" disabled>Select</option>
                                         @foreach ($suppliers as $supplier)
-                                            <option value="{{ $supplier->id }}">{{ $supplier->company_name }}</option>
+                                            <option value="{{ $supplier->id }}"
+                                                {{ $purchase->supplier_id == $supplier->id ? 'selected' : '' }}>
+                                                {{ $supplier->company_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Product <span
-                                            class="text-danger">*</span></label>
-                                    <select name="product" id="" class="form-select" required>
-                                        <option value="{{ $purchase->productID }}" selected>{{ $purchase->productName }}</option>
-                                        <option value="" disabled>Select</option>
-                                        @foreach ($products as $product)
-                                            <option value="{{ $product->id }}">{{ $product->product_name }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-md-8 mb-3">
+                                    <table class="table table-bordered" id="purchaseTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Qty</th>
+                                                <th>Unit Price <span class="text-muted"
+                                                        style="font-size: 0.7rem;">(ETB)</span></th>
+                                                <th>Total <span class="text-muted"
+                                                        style="font-size: 0.7rem;">(ETB)</span></th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($purchaseItems as $item)
+                                                <tr>
+                                                    <td>
+                                                        <select name="product[]" class="form-select" required>
+                                                            <option value="">Select</option>
+                                                            @foreach ($products as $product)
+                                                                <option value="{{ $product->id }}"
+                                                                    {{ $item->product_id == $product->id ? 'selected' : '' }}>
+                                                                    {{ $product->product_name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="number" name="quantity[]"
+                                                            class="form-control quantity" value="{{ $item->quantity }}"
+                                                            required></td>
+                                                    <td><input type="number" name="unitPrice[]"
+                                                            class="form-control unitPrice"
+                                                            value="{{ $item->unit_price }}" required></td>
+                                                    <td><input type="number" name="totalPrice[]"
+                                                            class="form-control totalPrice"
+                                                            value="{{ $item->total_price }}" readonly></td>
+                                                    <td>
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-danger removeRow">remove</button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
+                                    <button type="button" class="btn btn-primary btn-sm" id="addRow">+ Add
+                                        Item</button>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Quantity <span
+                                    <label for="" class="form-label">Total Price <span class="text-muted"
+                                            style="font-size:0.7rem;">(ETB)</span> <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="quantity" id="quantity" value="{{ $purchase->quantity }}" required>
+                                    <input type="number" class="form-control" name="totalPrice" id="totalPrice"
+                                        value="{{ $purchase->total_price }}" readonly required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Unit Price <span class="text-muted" style="font-size:0.75rem;">(ETB)</span> <span
+                                    <label for="" class="form-label">Tax <span
+                                            style="font-size:0.7rem;">(15%)</span> <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="unitPrice" id="unitPrice" value="{{ $purchase->unit_price }}" required>
+                                    <input type="number" class="form-control" name="tax" id="tax"
+                                        value="{{ $purchase->tax }}" readonly required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Total Price <span class="text-muted" style="font-size:0.75rem;">(ETB)</span> <span
+                                    <label for="" class="form-label">Grand Total <span class="text-muted"
+                                            style="font-size:0.7rem;">(ETB)</span> <span
                                             class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="totalPrice" id="totalPrice" value="{{ $purchase->total_price }}"
-                                     readonly   required>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Tax (%) <span
-                                            class="text-danger">*</span></label>
-                                    <select name="taxtPercent" id="taxPercent" class="form-select col-md-4" required>
-                                        <option value="{{ $purchase->tax_percent}}">{{ $purchase->tax_percent . ' %' }}</option>
-                                        <option value="" disabled>Select</option>
-                                        <option value="2">2 %</option>
-                                        <option value="5">5 %</option>
-                                        <option value="10">10 %</option>
-                                        <option value="12">12 %</option>
-                                        <option value="15">15 %</option>
-                                    </select>
-                                    <input type="number" class="form-control" name="tax" id="tax" value="{{ $purchase->tax }}" readonly required>
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="" class="form-label">Grand Total <span class="text-muted" style="font-size:0.75rem;">(ETB)</span> <span
-                                            class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="grandTotal" id="grandTotal" value="{{ $purchase->grand_total }}"
-                                      readonly  required>
+                                    <input type="number" class="form-control" name="grandTotal" id="grandTotal"
+                                        value="{{ $purchase->grand_total }}" readonly required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="" class="form-label">Purchase Date <span
                                             class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" name="purchaseDate" max="{{ date('Y-m-d') }}" value="{{ $purchase->purchase_date }}" required>
+                                    <input type="date" class="form-control" name="purchaseDate"
+                                        value="{{ $purchase->purchase_date }}"
+                                        min="{{ date('Y-m-d', strtotime('-5 days')) }}" max="{{ date('Y-m-d') }}"
+                                        required>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="" class="form-label">Status <span
                                             class="text-danger">*</span></label>
-                                            <select name="status" id="" class="form-select" required>
-                                                <option value="{{ $purchase->status }}">{{ $purchase->status }}</option>
-                                                <option value="received">Received</option>
-                                                <option value="stocked">Stocked</option>
-                                            </select>
+                                    <select name="status" id="" class="form-select">
+                                        <option value="{{ $purchase->status }}">{{ $purchase->status }}</option>
+                                        <option value="received">received</option>
+                                        <option value="stocked">stocked</option>
+                                    </select>
                                 </div>
                             </div>
-
                             <div class="text-end">
                                 <button type="submit" class="btn btn-success">
                                     Update <i class="fas fa-edit"></i>
@@ -159,27 +183,70 @@
             });
         </script>
     @endif
-
     <script>
-        function calculateTotal() {
+        // Add new row
+        document.getElementById('addRow').addEventListener('click', function() {
+            let table = document.querySelector('#purchaseTable tbody');
+            let row = table.rows[0].cloneNode(true);
 
-            let quantity = parseFloat(document.getElementById('quantity').value) || 0;
-            let unitPrice = parseFloat(document.getElementById('unitPrice').value) || 0;
-            let taxPercent = parseFloat(document.getElementById('taxPercent').value) || 0;
+            row.querySelectorAll('input').forEach(input => input.value = '');
 
-            let totalPrice = quantity * unitPrice;
-            document.getElementById('totalPrice').value = totalPrice.toFixed(2);
+            table.appendChild(row);
+        });
 
-            let tax = (totalPrice * taxPercent) / 100;
-            document.getElementById('tax').value = tax.toFixed(2);
+        // Remove row
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('removeRow')) {
+                let rows = document.querySelectorAll('#purchaseTable tbody tr');
+                if (rows.length > 1) {
+                    e.target.closest('tr').remove();
+                    calculateGrandTotal();
+                }
+            }
+        });
 
-            let grandTotal = totalPrice + tax;
-            document.getElementById('grandTotal').value = grandTotal.toFixed(2);
+        // Calculate row total
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('quantity') || e.target.classList.contains('unitPrice')) {
+
+                let row = e.target.closest('tr');
+
+                let qty = parseFloat(row.querySelector('.quantity').value) || 0;
+                let price = parseFloat(row.querySelector('.unitPrice').value) || 0;
+
+                let total = qty * price;
+
+                row.querySelector('.totalPrice').value = total.toFixed(2);
+
+                calculateGrandTotal();
+            }
+        });
+
+        // Grand total
+        function calculateGrandTotal() {
+            let totals = document.querySelectorAll('.totalPrice');
+            let sum = 0;
+
+            totals.forEach(input => {
+                sum += parseFloat(input.value) || 0;
+            });
+
+            document.getElementById('totalPrice').value = sum.toFixed(2);
+
+            calculateTax();
         }
 
-        document.getElementById('quantity').addEventListener('input', calculateTotal);
-        document.getElementById('unitPrice').addEventListener('input', calculateTotal);
-        document.getElementById('taxPercent').addEventListener('change', calculateTotal);
+        // Tax + Grand total
+        function calculateTax() {
+            let total = parseFloat(document.getElementById('totalPrice').value) || 0;
+
+            let tax = (total * 15) / 100;
+            document.getElementById('tax').value = tax.toFixed(2);
+
+            document.getElementById('grandTotal').value = (total + tax).toFixed(2);
+        }
+
+        document.getElementById('totalPrice').addEventListener('change', calculateTax);
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
